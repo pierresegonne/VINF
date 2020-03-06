@@ -112,4 +112,33 @@ TODO
 
 ## Step 2: Implement Normalizing Flows on Simple Example
 
-TODO
+### Study of Article
+
+__Finite Flows__
+
+Considering invertible smooth mappings $ f: \mathbb{R}^{d} \rightarrow \mathbb{R}^{d} $, the mapping of a random variable $ z $ with distribution $ q(z) $ will result in a new random variable $ z' = f(z) $ which follows the distribution :
+
+$$ q(z') = q(z) |det\frac{\partial f^{-1}}{\partial z'}| = q(z) |det\frac{\partial f}{\partial z}|^{-1} $$
+
+The right equality is the [inverse function theorem](https://en.wikipedia.org/wiki/Inverse_function_theorem)
+
+Thus for a succession of k mappings:
+
+$$ z_{K} = f_{K} \circ ... \circ f_{1} (z_{0})$$
+$$ \ln(q_{K}(z_{K}) = \ln(q_{0}(z_{0})) - \sum_{k=1}^{K} \ln|det\frac{\partial f_{k}}{\partial z_{k-1}}|$$
+
+__Planar Flows__
+
+Considering a family of transformations:
+
+$$ f(z) = z + uh(w^{T}z+b) $$
+
+where $ h $ is a smooth element-wise non-linearity. Then it is possible to derive, through the [chain rule](https://en.wikipedia.org/wiki/Chain_rule)
+
+$$ |det\frac{\partial f}{\partial z}| = |det(\frac{\partial z}{\partial z} + u\frac{\partial h(w^{T}z+b)}{\partial z})| = |det(I + uh'(w^{T}z+b)\frac{\partial (w^{T}z+b)}{\partial})| = |det(I + u(h'(w^{T}z+b)w)^{T})|$$
+
+which in turn yields, through the [matrix determinant lemma](https://en.wikipedia.org/wiki/Matrix_determinant_lemma), with the notation $ \psi(z) = h'(w^{T}z+b)w $
+
+$$ |det\frac{\partial f}{\partial z}| = |(1+u^{T}\psi(z))det(I)| = |1+u^{T}\psi(z)| $$
+
+_note_: why the transpose act like this? And why $\frac{\partial z}{\partial z} = I$ ? [-> [Implicit notation of Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)]
