@@ -9,7 +9,7 @@ applied to the original distribution.
 """
 w = np.array([0, -1])
 b = 1
-u = np.array([0.99,0.99])
+u = np.array([-0.999,-0.999])
 
 print('Hyperplane: {}x + {}y = -{}'.format(w[0],w[1],b))
 print('F Invertible: {}'.format(w@u.T >= -1))
@@ -30,28 +30,28 @@ for i in range(len(psi)):
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlabel('Y axis')
-ax.set_ylabel('u.Y@Psi')
+ax.set_ylabel('u.T@Psi')
 ax.grid()
 ax.plot(y, psi)
 
 fig = plt.figure()
 ax = fig.gca()
-ax.set_xlabel('Y axis')
-ax.set_ylabel('|1 + u.Y@Psi|')
+ax.set_xlabel('X axis')
+ax.set_ylabel('|1 + u.T@Psi|')
 ax.grid()
 ax.plot(y, np.abs(1 + psi))
 
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlabel('Y axis')
-ax.set_ylabel('- ln|1 + u.Y@Psi|')
+ax.set_ylabel('- ln|1 + u.T@Psi|')
 ax.grid()
 ax.plot(y, - np.log(np.abs(1 + psi)))
 
 fig = plt.figure()
 ax = fig.gca()
 ax.set_xlabel('Y axis')
-ax.set_ylabel('exp(-ln|1 + u.Y@Psi|)')
+ax.set_ylabel('exp(-ln|1 + u.T@Psi|)')
 ax.grid()
 ax.plot(y, np.exp(-np.log(np.abs(1 + psi))))
 

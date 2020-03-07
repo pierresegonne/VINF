@@ -127,6 +127,20 @@ Thus for a succession of k mappings:
 $$ z_{K} = f_{K} \circ ... \circ f_{1} (z_{0})$$
 $$ \ln(q_{K}(z_{K}) = \ln(q_{0}(z_{0})) - \sum_{k=1}^{K} \ln|det\frac{\partial f_{k}}{\partial z_{k-1}}|$$
 
+Exemple in 1D: Let $ z_{0} \sim q_{o}(z_{0}) $ and $ z_{1} \sim q_{1}(z_{1}) $ such that $ z_{1} = f(z_{0}) $ with f invertible and smooth such that $ f^{-1}(z_{1}) = z_{0} $. Both distribution $ q_{0} and q_{1} $ have integrals that sum up to 1. So,
+
+$$ \int_{-\inf}^{\inf} q_{0}(z_{0})dz_{0} = \int_{-\inf}^{\inf} q_{1}(z_{1})dz_{1} $$
+
+Therefore,
+
+$$ q_{1}(z_{1}) = q_{0}(z_{0})\frac{dz_{0}}{dz_{1}} = q_{0}(z_{0})\frac{df^{-1}(z_{1})}{dz_{1}} $$
+
+Which in turns, thanks to the inverse function theorem yields:
+
+$$ q_{1}(z_{1}) = q_{0}(z_{0})(\frac{df(z_{0})}{dz_{0}})^{-1}$$
+
+_note_: absolute value of f can be considered to make sure its rate of change is positive.
+
 __Planar Flows__
 
 Considering a family of transformations:
@@ -142,3 +156,41 @@ which in turn yields, through the [matrix determinant lemma](https://en.wikipedi
 $$ |det\frac{\partial f}{\partial z}| = |(1+u^{T}\psi(z))det(I)| = |1+u^{T}\psi(z)| $$
 
 _note_: why the transpose act like this? And why $\frac{\partial z}{\partial z} = I$ ? [-> [Implicit notation of Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)]
+
+Resulting distributions, from a unit 2D gaussian originally:
+
+![Original Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/original_unit_gaussian_3D.png)
+
+![Original Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/original_unit_gaussian_contour.png)
+
+After a single flow, which contracts along the {y=1} hyperplan:
+
+![1 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1planar_flows_3D.png)
+
+![1 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1planar_flows_contour.png)
+
+After applying three other flows which expand along the {x=1} hyperplan:
+
+![2 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2planar_flows_3D.png)
+
+![2 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2planar_flows_contour.png)
+
+__note__: I wrote a script to understand the influence of the flow on the resulting distribution, see below:
+
+for the contraction along {y=1}
+
+![Singular Planar Flow Factor Arg {y=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_flow_arg_y=1.png)
+
+![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_flow_exp_y=1.png)
+
+for the expansion along {x=1}
+
+![Singular Planar Flow Factor Arg {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_flow_arg_x=1.png)
+
+![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_flow_exp_x=1.png)
+
+
+
+# MISC
+
+[blog post with pytorch implementation of flows](https://www.ritchievink.com/blog/2019/10/11/sculpting-distributions-with-normalizing-flows/)

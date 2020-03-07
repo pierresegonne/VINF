@@ -113,7 +113,7 @@ b = [0, 1, 1, 1, 1]
 for i in range(1, len(b)):
     print('F invertible? {}'.format(f_invertible(u[i],w[i])))
 
-pdf_z1 = planar(pos.reshape(-1,2), rv.pdf, 4, u, w, b)
+pdf_z1 = planar(pos.reshape(-1,2), rv.pdf, 1, u, w, b)
 pdf_z1 = np.exp(pdf_z1)
 
 # Plot
