@@ -1,7 +1,5 @@
 import numpy as np
 import matplotlib.pyplot as plt
-
-from scipy.stats import multivariate_normal
 """
 For a given set of parameters that will define contractions/expansions
 along the hyperplane {y = 1}, study the evolution of the transfer function

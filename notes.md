@@ -149,13 +149,13 @@ $$ f(z) = z + uh(w^{T}z+b) $$
 
 where $ h $ is a smooth element-wise non-linearity. Then it is possible to derive, through the [chain rule](https://en.wikipedia.org/wiki/Chain_rule)
 
-$$ |det\frac{\partial f}{\partial z}| = |det(\frac{\partial z}{\partial z} + u\frac{\partial h(w^{T}z+b)}{\partial z})| = |det(I + uh'(w^{T}z+b)\frac{\partial (w^{T}z+b)}{\partial})| = |det(I + u(h'(w^{T}z+b)w)^{T})|$$
+$$ |det\frac{\partial f}{\partial z}| = |det(\frac{\partial z}{\partial z} + u^{T}\frac{\partial h(w^{T}z+b)}{\partial z})| = |det(I + u^{T}h'(w^{T}z+b)\frac{\partial (w^{T}z+b)}{\partial})| = |det(I + u^{T}h'(w^{T}z+b)w)|$$
 
 which in turn yields, through the [matrix determinant lemma](https://en.wikipedia.org/wiki/Matrix_determinant_lemma), with the notation $ \psi(z) = h'(w^{T}z+b)w $
 
 $$ |det\frac{\partial f}{\partial z}| = |(1+u^{T}\psi(z))det(I)| = |1+u^{T}\psi(z)| $$
 
-_note_: why the transpose act like this? And why $\frac{\partial z}{\partial z} = I$ ? [-> [Implicit notation of Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)]
+_note_: why the transpose act like this? [-> eq (69), page 10 of [matrix cookbook](http://www2.imm.dtu.dk/pubdb/views/edoc_download.php/3274/pdf/imm3274.pdf) cf $ \frac{\partial w^{T}z}{\partial z} = \frac{\partial \sum_{i}w_{i}z_{i}}{\partial z} = \sum_{i} w_{i}e_{i} = w $] And why $\frac{\partial z}{\partial z} = I$ ? [-> [Implicit notation of Jacobian](https://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant)]
 
 Resulting distributions, from a unit 2D gaussian originally:
 
@@ -194,3 +194,5 @@ for the expansion along {x=1}
 # MISC
 
 [blog post with pytorch implementation of flows](https://www.ritchievink.com/blog/2019/10/11/sculpting-distributions-with-normalizing-flows/)
+
+[ICML Normalizing Flow Workshop](https://icml.cc/Conferences/2019/ScheduleMultitrack?event=3521)

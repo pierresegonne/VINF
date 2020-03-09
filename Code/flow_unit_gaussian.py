@@ -55,11 +55,13 @@ u = np.array([0.999, 0.999])
 b = 1
 
 # ======
-# Check correctness of (u,w) for f invertible
-def f_invertible(u,w):
+# Check correctness of (u,w) for f invertible [planar]
+def f_invertible_planar(u,w):
     return (w@(u.T)) >= -1
 
-print('F invertible? {}'.format(f_invertible(u,w)))
+# Check correctness of (alpha, beta) for f invertible [radial]
+def f_invertible_radial(alpha, beta):
+    return (beta >= - alpha)
 
 # ======
 # ~~ Manual
@@ -106,15 +108,62 @@ def planar(z0, q0, K, u, w, b):
             )@u[k][:,None]))).flatten()
     return ln_qK
 
+def radial(z0, q0, K, zref, alpha, beta):
+
+    def h(r, alpha):
+        return 1 / (alpha + r)
+
+    def h_p(r, alpha):
+        return -1 / ((alpha + r)**2)
+
+    def f(z, zref, alpha, beta):
+        r = np.linalg.norm(z - zref, ord='fro')**2
+        return z + beta*h(r, alpha)*(z-zref)
+
+    def fk(z0, zref, alpha, beta, K):
+        zk = z0
+        for k in range(K):
+            zk = f(zk, zref, alpha, beta)
+        return zk
+
+    ln_qK = np.log(q0(z0))
+    for k in range(1,K+1):
+        zk_1 = fk(z0, zref[k], alpha[k], beta[k], k-1)
+        rk_1 = np.linalg.norm(zk_1 - zref[k], axis=1)**2 # fro or 2 ?
+        ln_qK -= ((z0.shape[1]-1) * np.log(1 + beta[k]*h(rk_1, alpha[k])) +
+            np.log(1 + beta[k]*h(rk_1, alpha[k]) + beta[k]*h_p(rk_1, alpha[k])*rk_1))
+    return ln_qK
+
 # beware of 1 index for start
 w = [0, np.array([0, -1]), np.array([-1, 0]), np.array([-1, 0]), np.array([-1, 0])]
 u = [0, np.array([0.999, 0.999]), np.array([-0.9999, -0.9999]), np.array([-0.9999, -0.9999]), np.array([-0.9999, -0.9999])]
 b = [0, 1, 1, 1, 1]
-for i in range(1, len(b)):
-    print('F invertible? {}'.format(f_invertible(u[i],w[i])))
 
-pdf_z1 = planar(pos.reshape(-1,2), rv.pdf, 1, u, w, b)
-pdf_z1 = np.exp(pdf_z1)
+zref = [0, np.array([[1.15, 1]]), np.array([[1.15, 1]]), np.array([[1.15, 1]])]
+alpha = [0, 1, 0.1, 0.1]
+beta = [0, -0.05, -0.001, -0.001]
+
+n_layers = 1
+
+PLANAR_FLOW = False
+RADIAL_FLOW = not PLANAR_FLOW
+
+if PLANAR_FLOW:
+    for i in range(1, n_layers + 1):
+        print('F invertible? {}'.format(f_invertible_planar(u[i],w[i])))
+
+    pdf_z1 = planar(pos.reshape(-1,2), rv.pdf, n_layers, u, w, b)
+    pdf_z1 = np.exp(pdf_z1)
+if RADIAL_FLOW:
+    for i in range(1, n_layers + 1):
+        print('F invertible? {}'.format(f_invertible_radial(alpha[i],beta[i])))
+
+    pdf_z1 = radial(pos.reshape(-1,2), rv.pdf, n_layers, zref, alpha, beta)
+    pdf_z1 = np.exp(pdf_z1)
+
+# Integrals of distributions
+print('Integral of the initial distribution: {}'.format(np.trapz(np.trapz(rv.pdf(pos), pos[0, :, 0], axis=0), pos[:, 0, 1])))
+print('Integral of the distribution after the flow: {}'.format(np.trapz(np.trapz(pdf_z1.reshape(X.shape), pos[0, :, 0], axis=0), pos[:, 0, 1])))
 
 # Plot
 if True:
