@@ -268,7 +268,7 @@ For the dilatation around a point
 
 ![Singular Radial Flow Factor Arg Dila](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_dila_arg.png)
 
-![Singular Radial Flow Factor Dila}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_dila_exp.png)
+![Singular Radial Flow Factor Dila](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_dila_exp.png)
 
 
 ## Normalizing Flows as Neural Network
@@ -277,9 +277,26 @@ TODO
 
 # Unanswered Questions
 
+* Why does Bishop say that the variance of $q(z)$ is controlled by the direction of smalles variance of $p(z)$? (page 467 in the paragraph after equation (10.15))
+
+>I implemented my own version of that mean field approxmation, and it results that the approximated posterior q(z) has variance: $$ Var(q(z)) = \begin{bmatrix} \Lambda_{11} & 0\\ 0 & \Lambda_{22} \end{bmatrix} $$ Resulting in the following distributions:
+
+>![Comparison q,p for variance capture](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/pz_qz_variance_capture.png)
+
+* How can one draw the contour plot of a mixture of multivariate gaussians in mean field approximation?
+
+>The parameters of the different mixture elements have a known distribution (see the first part for that), but how can one use the following ? $$ p(\mu | \Lambda)p(\Lambda) = p(\mu , \Lambda) = \prod_{k=1}^{K}\mathcal{N}(\mu_{k} | m_{0}, (\beta_{0}\Lambda_{k})^{-1})\mathcal{W}(\Lambda_{k} | W_{0}, \nu_{0}) $$ In my implementation, I cannot access directly the Wishart component $ \Lambda_{k} $.
+
+* What dataset will be used for testing the neural network implementation ?
+
+>First some test distributions can be used to verify the ability of the flow to fit non-trivial distributions. Then, it would be usefull to use a broad dataset to train a VAE where the encoder is enriched with normalizing flows (ex CIFAR10?).
+
 * What non-trivial distributions could be used to test the ability of a finite set of flows to fit?
 
->[Yes but did it work?]() presents a way to conduct a diagnostic of how close an approximated posterior distribtion fits, but I am not sure yet on what to use from that. Otherwise I implemented a [banana distribution]() and a [circle distribution]().
+>[Yes but did it work?]() presents a way to conduct a diagnostic of how close an approximated posterior distribtion fits, but I am not sure yet on what to use from that. Otherwise I implemented a [banana distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/banana.py) and a [circle distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/circle.py).
+![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
+
+>![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_distribution.png)
 
 * Are there any other types of finite flow we could consider?
 
