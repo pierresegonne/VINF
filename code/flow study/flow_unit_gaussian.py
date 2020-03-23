@@ -34,7 +34,8 @@ resolution = 1e-2
 x = np.arange(0, 2, resolution)
 y = np.arange(0, 2, resolution)
 X, Y = np.meshgrid(x,y)
-
+pos = np.empty(X.shape + (2,))
+pos[:, :, 0] = X; pos[:, :, 1] = Y
 
 # =======
 # Original Distribution
@@ -149,7 +150,7 @@ if True:
 
 # ======
 # Run
-n_layers = 4
+n_layers = 1
 
 PLANAR_FLOW = True
 RADIAL_FLOW = not PLANAR_FLOW
