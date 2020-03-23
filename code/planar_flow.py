@@ -6,18 +6,25 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 """ Custom layers as flows """
 class PlanarFlow(tf.keras.layers.Layer):
-    def __init__(self, d=1, init_sigma=0.01):
+    def __init__(self, init_sigma=0.01):
         super(PlanarFlow, self).__init__()
+        # Parameters
+        self.d = None
+        self.init_sigma = init_sigma
+
+    def build(self, input_shape):
+        # know the shapes of the input tensors and can do the rest of the initialization
         # parameters of the flow
-        w_init = tf.random_normal_initializer(stddev=init_sigma, seed=100)
+        w_init = tf.random_normal_initializer(stddev=self.init_sigma)
+        self.d = input_shape[-1]
         self.u = self.add_weight(
             'u',
-            shape=[1,d],
+            shape=[1, self.d],
             initializer=w_init
             )
         self.w = self.add_weight(
             'w',
-            shape=[1,d],
+            shape=[1, self.d],
             initializer=w_init
             )
         self.b = self.add_weight(
@@ -25,10 +32,6 @@ class PlanarFlow(tf.keras.layers.Layer):
             shape=[1],
             initializer=w_init
             )
-
-    # def build(self, input_shape):
-    #     # know the shapes of the input tensors and can do the rest of the initialization
-    #     pass
 
     @property
     def normalized_u(self):
@@ -85,8 +88,8 @@ class PlanarFlow(tf.keras.layers.Layer):
         return fz, log_det_jacobian
 
 
-planar_flow = PlanarFlow(d=2)
-test_input = tf.random.normal(shape=(1,2), seed=100)
+planar_flow = PlanarFlow()
+test_input = tf.random.normal(shape=(4,10,2))
 output = planar_flow(test_input)
 
 
