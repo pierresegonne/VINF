@@ -283,6 +283,18 @@ TODO
 
 >![Comparison q,p for variance capture](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/pz_qz_variance_capture.png)
 
+> My mistake was coming from the use of the precision matrix. In bishop $ \Lambda $ is the precision matrix (i.e $ \Sigma = \Lambda^{-1} $). Therefore considering:
+
+> $$ q(z) = q_{1}(z_{1})q_{2}(z_{2}) = \mathcal{N}(z1|m_{1}, \Lambda_{11}^{-1})\mathcal{N}(z2|m_{2}, \Lambda_{22}^{-1}) $$
+
+> is equivalent to having $ q(z) = \mathcal{N}(z|m,\Sigma) $ with:
+
+> $$ \Sigma = \begin{bmatrix} \frac{1}{\Lambda_{11}} & 0\\ 0 & \frac{1}{\Lambda_{22}} \end{bmatrix} $$
+
+> where $ \Lambda_{11} $ is the element at indices 1,1 in the precision matrix. It gives the resulting result:
+
+>![Comparison q,p for variance capture, correct](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/pz_qz_variance_capture_true.png)
+
 * How can one draw the contour plot of a mixture of multivariate gaussians in mean field approximation?
 
 >The parameters of the different mixture elements have a known distribution (see the first part for that), but how can one use the following ? $$ p(\mu | \Lambda)p(\Lambda) = p(\mu , \Lambda) = \prod_{k=1}^{K}\mathcal{N}(\mu_{k} | m_{0}, (\beta_{0}\Lambda_{k})^{-1})\mathcal{W}(\Lambda_{k} | W_{0}, \nu_{0}) $$ In my implementation, I cannot access directly the Wishart component $ \Lambda_{k} $.
@@ -311,6 +323,19 @@ TODO
 >$$ \int_{-\inf}^{\inf} q_{1}(z_{1})dz_{1} = \int_{-\inf}^{\inf} q_{0}(f^{-1}(z_{1}))|1+u^{T}h'(w^{T}f^{-1}(z_{1})+b)w|^{-1}dz_{1} $$
 
 >It would therefore be necessary for that approach to know $ f^{-1} $, which is not trivial to find for e.g $h(x) = tanh(x)$.
+
+> So in a specific case it's analytically difficult to prove that. But in general, because of how we defined q1 the following holds:
+
+> $$ \int_{-\inf}^{\inf} q_{1}(z_{1})dz_{1} = \int_{-\inf}^{\inf} q_{1}(z_{1}) \frac{dz_{1}}{dz_{0}}dz_{0} = \int_{-\inf}^{\inf} q_{1}(z_{1})f'(z_{0})dz_{0} = \int_{-\inf}^{\inf} q_{0}(z_{0})dz_{0} = 1 $$
+
+
+* For learning a given distribution, what loss can be used for optimization of flow parameters?
+
+> The variational free energy  can be used, if one can infer the negative log likelihood of the data and provide a prior for the latent variables.
+
+* If these flows are used in the setting of a VAE, what kind of loss can be used?
+
+> Basic VAE uses ELBO.
 
 # MISC
 
