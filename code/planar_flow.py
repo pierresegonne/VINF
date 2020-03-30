@@ -68,15 +68,15 @@ class PlanarFlow(tf.keras.layers.Layer):
         """
         return self.h_p(z@tf.transpose(self.w) + self.b) @ self.w
 
-    def call(self, z):
+    def call(self, z_input):
         """
         z: [N,d]
         fz: [N,d], log_det_jacobian: [1]
         """
-        if isinstance(z, tuple):
-            z, log_det_jacobian = z
+        if isinstance(z_input, tuple):
+            z, log_det_jacobian = z_input[0], z_input[1]
         else:
-            z, log_det_jacobian = z, 0
+            z, log_det_jacobian = z_input, 0
 
         u = self.normalized_u
 
@@ -88,13 +88,15 @@ class PlanarFlow(tf.keras.layers.Layer):
         return fz, log_det_jacobian
 
 
-planar_flow = PlanarFlow()
-test_input = tf.random.normal(shape=(4,10,2))
-output = planar_flow(test_input)
+if __name__ == '__main__':
+    planar_flow = PlanarFlow()
+    test_input = tf.random.normal(shape=(4,10,2))
+    output = planar_flow(test_input)
 
+    print(planar_flow.weights)
 
-print(test_input)
-print('\n')
-print(output)
-print('\n')
-print(planar_flow.w, planar_flow.u, planar_flow.normalized_u, planar_flow.b)
+    print(test_input)
+    print('\n')
+    print(output)
+    print('\n')
+    print(planar_flow.w, planar_flow.u, planar_flow.normalized_u, planar_flow.b)

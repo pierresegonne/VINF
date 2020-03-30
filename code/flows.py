@@ -2,10 +2,6 @@ import tensorflow as tf
 
 from planar_flow import PlanarFlow
 
-def variational_free_enery():
-    # TODO
-    pass
-
 class ParametrizedGaussian(tf.keras.layers.Layer):
     def __init__(self, init_sigma=0.01):
         super(ParametrizedGaussian, self).__init__()
@@ -32,23 +28,39 @@ class ParametrizedGaussian(tf.keras.layers.Layer):
         return self.mu + samples * std
 
 class Flows(tf.keras.Model):
-    def __init__(self, d=2, n_flows=10):
+    def __init__(self, d=2, n_flows=10, shape=(1000, 2)):
         super(Flows, self).__init__()
 
         # Parameters
         self.d = d
         self.n_flows = n_flows
+        self.shape = shape
 
         # Layers
         self.parametrized_gaussian = ParametrizedGaussian()
-        self.flows = tf.keras.Sequential(*[PlanarFlow() for _ in range(n_flows)])
+        for i in range(1, self.n_flows + 1):
+            setattr(self, "flow%i" % i, PlanarFlow())
 
-    def call(self, shape):
+    def build(self, input_shape):
+        """
+        Needed to create the layers
+        """
+        eps = tf.random.normal(input_shape)
+        z0 = self.parametrized_gaussian(eps)
+        for i in range(1, self.n_flows + 1):
+            _ = getattr(self, "flow%i" % i)(z0)
+
+    def call(self, inputs):
         # Transform unit gaussian into parametrized q0
-        eps = tf.random.normal(shape=shape)
+        eps = tf.random.normal(shape=self.shape)
         z0 = self.parametrized_gaussian(eps)
 
-        zk, log_det_jacobian = self.flows(z0)
+        zk, log_det_jacobian = self.flow1(z0)
+        for i in range(2, self.n_flows + 1 ):
+            zk, log_det_jacobian = getattr(self, "flow%i" % i)((zk, log_det_jacobian))
 
-        return z0, zk, log_det_jacobian,
-            self.parametrized_gaussian.mu, self.parametrized_gaussian.log_var
+        return z0, zk, log_det_jacobian, self.parametrized_gaussian.mu, self.parametrized_gaussian.log_var
+
+if __name__ == '__main__':
+    flows = Flows(d=2, n_flows=16)
+    print(flows.trainable_variables)

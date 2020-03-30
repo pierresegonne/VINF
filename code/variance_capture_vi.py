@@ -5,7 +5,8 @@ from scipy.stats import multivariate_normal
 
 # Example parameters of multivariate
 mu = np.array([0.5,0.5])
-sig = np.array([[0.06,0.055],[0.055,0.06]])
+sig = np.array([[0.06,0.056],[0.056,0.06]])
+precision = np.linalg.inv(sig)
 
 # Create grid and multivariate normal
 x = np.linspace(0,1,100)
@@ -16,8 +17,8 @@ pos[:, :, 0] = X; pos[:, :, 1] = Y
 p = multivariate_normal(mu, sig)
 
 # Factorized distribution
-q1 = multivariate_normal(mu[0], sig[0,0])
-q2 = multivariate_normal(mu[1], sig[1,1])
+q1 = multivariate_normal(mu[0], 1/precision[0,0])
+q2 = multivariate_normal(mu[1], 1/precision[1,1])
 
 def factorized_pdf(pos, q1, q2):
     n1, n2, _ = pos.shape
@@ -27,4 +28,5 @@ def factorized_pdf(pos, q1, q2):
 
 plt.contour(X,Y, p.pdf(pos), colors='green')
 plt.contour(X,Y, factorized_pdf(pos, q1, q2), colors='red')
+
 plt.show()

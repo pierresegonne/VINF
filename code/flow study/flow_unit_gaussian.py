@@ -3,6 +3,7 @@ import numpy as np
 
 from mpl_toolkits.mplot3d import Axes3D
 from scipy.stats import multivariate_normal
+from scipy.integrate import dblquad
 """
 Apply a given succession of flows, planar or radial, to a unit gaussian and observe deformation of contour plot.
 """
@@ -31,8 +32,10 @@ def plot_contour_distribution(X,Y,pdf):
 # =======
 # Data
 resolution = 1e-2
-x = np.arange(0, 2, resolution)
-y = np.arange(0, 2, resolution)
+LB = 0
+UB = 2
+x = np.arange(LB, UB, resolution)
+y = np.arange(LB, UB, resolution)
 X, Y = np.meshgrid(x,y)
 pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X; pos[:, :, 1] = Y
@@ -98,9 +101,8 @@ def planar(z0, q0, K, u, w, b):
 
     ln_qK = np.log(q0(z0))
     for k in range(1,K+1):
-        ln_qK -= np.log(np.abs(1 + (psi(
-            fk(z0,u[k],w[k],b[k],k-1),w[k],b[k]
-            )@u[k][:,None]))).flatten()
+        zk_1 = fk(z0, u[k], w[k], b[k], k-1)
+        ln_qK -= np.log(np.abs(1 + (psi(zk_1, w[k], b[k])@u[k][:,None]))).flatten()
     return ln_qK
 
 def radial(z0, q0, K, zref, alpha, beta):
@@ -159,24 +161,40 @@ if PLANAR_FLOW:
     for i in range(1, n_layers + 1):
         print('F invertible? {}'.format(f_invertible_planar(u[i],w[i])))
 
-    pdf_z1 = planar(pos.reshape(-1,2), rv.pdf, n_layers, u, w, b)
-    pdf_z1 = np.exp(pdf_z1)
+    pdf_zk = planar(pos.reshape(-1,2), rv.pdf, n_layers, u, w, b)
+    pdf_zk = np.exp(pdf_zk)
+
+    # For integral computation
+    def qk_pdf(y,x):
+        return np.exp(planar(np.array([[x,y]]), rv.pdf, n_layers, u, w, b))
 
 if RADIAL_FLOW:
     for i in range(1, n_layers + 1):
         print('F invertible? {}'.format(f_invertible_radial(alpha[i],beta[i])))
 
-    pdf_z1 = radial(pos.reshape(-1,2), rv.pdf, n_layers, zref, alpha, beta)
-    pdf_z1 = np.exp(pdf_z1)
+    pdf_zk = radial(pos.reshape(-1,2), rv.pdf, n_layers, zref, alpha, beta)
+    pdf_zk = np.exp(pdf_zk)
+
+    # For integral computation
+    def qk_pdf(y,x):
+        return np.exp(radial(np.array([[x,y]]), rv.pdf, n_layers, zref, alpha, beta))
+
+def q0_pdf(y,x):
+    return rv.pdf(np.array([[x,y]]))
 
 # Integrals of distributions
 print('Integral of the initial distribution: {}'.format(np.trapz(np.trapz(rv.pdf(pos), pos[0, :, 0], axis=0), pos[:, 0, 1])))
-print('Integral of the distribution after the flow: {}'.format(np.trapz(np.trapz(pdf_z1.reshape(X.shape), pos[0, :, 0], axis=0), pos[:, 0, 1])))
+print('Integral of the distribution after the flow: {}'.format(np.trapz(np.trapz(pdf_zk.reshape(X.shape), pos[0, :, 0], axis=0), pos[:, 0, 1])))
+print('---')
+initial_integral = dblquad(q0_pdf, LB, UB, lambda x: LB, lambda x: UB)
+print('Integral of the initial distribution: {}'.format(initial_integral))
+after_flow_integral = dblquad(qk_pdf, LB, UB, lambda x: LB, lambda x: UB)
+print('Integral of the distribution after the flow: {}'.format(after_flow_integral))
 
 # Plot
 if True:
-    plot_contour_distribution(X,Y, pdf_z1.reshape(X.shape))
+    plot_contour_distribution(X,Y, pdf_zk.reshape(X.shape))
     plot_contour_distribution(X,Y, rv.pdf(pos))
-    plot_3d_distribution(X,Y, pdf_z1.reshape(X.shape))
+    plot_3d_distribution(X,Y, pdf_zk.reshape(X.shape))
     plot_3d_distribution(X,Y, rv.pdf(pos))
 plt.show()
