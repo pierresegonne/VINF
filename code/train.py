@@ -1,4 +1,3 @@
-import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_probability as tfp
 
@@ -34,7 +33,7 @@ def compute_apply_gradients(model, optimizer):
 
 def train(flows, epochs=10):
     optimizer = tf.keras.optimizers.Adam(1e-2)
-    for epoch in range(epochs):
+    for epoch in range(1, epochs + 1):
         loss = compute_apply_gradients(flows, optimizer)
 
         if epoch % 100 == 0:
@@ -43,19 +42,18 @@ def train(flows, epochs=10):
     return flows
 
 
-def show_samples(sk, mu, title):
+if __name__ == '__main__':
 
-    plt.figure(figsize=(8, 8))
-    plt.scatter(sk[:, 0], sk[:, 1])
+    # PARAMETERS
+    DATA_SHAPE = (5000,2)
+    TRAIN = True
+    SAVE_MODEL = True
+    MODEL_FILENAME = 'temp_weights.h5'
 
-    plt.xlim(-7.5, 7.5)
-    plt.ylim(-7.5, 7.5)
-    plt.show()
-
-
-DATA_SHAPE = (5000,2)
-flows = Flows(d=2, n_flows=16, shape=DATA_SHAPE)
-flows(tf.zeros(DATA_SHAPE))
-flows = train(flows, epochs=5000)
-z0, zk, ldj, mu, log_var = flows(tf.zeros(DATA_SHAPE))
-show_samples(zk, mu, "title")
+    # Train
+    flows = Flows(d=2, n_flows=16, shape=DATA_SHAPE)
+    flows(tf.zeros(DATA_SHAPE))
+    if TRAIN:
+        flows = train(flows, epochs=7000)
+    if SAVE_MODEL:
+        flows.save_weights(MODEL_FILENAME)
