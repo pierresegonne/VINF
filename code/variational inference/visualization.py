@@ -1,9 +1,9 @@
 import matplotlib.pyplot as plt
 import tensorflow as tf
 
-from flows import Flows
+from model import GaussianWithReparametrization
 
-MODEL_FILENAME = 'temp_weights.h5'
+MODEL_FILENAME = 'temp_weights_figure_eight.h5'
 
 
 def show_samples(zk, z0, mu, title):
@@ -29,11 +29,9 @@ def show_samples(zk, z0, mu, title):
     plt.ylim(-7.5, 7.5)
 
 DATA_SHAPE = (5000,2)
-flows = Flows(d=2, n_flows=16, shape=DATA_SHAPE)
-flows(tf.zeros(DATA_SHAPE))
-flows.load_weights(MODEL_FILENAME)
-z0, zk, ldj, mu, log_var = flows(tf.zeros(DATA_SHAPE))
-show_samples(z0, z0, mu, "title")
-show_samples(zk, z0, mu, "title")
-
+q = GaussianWithReparametrization(d=2, shape=DATA_SHAPE)
+q(tf.zeros(DATA_SHAPE))
+q.load_weights(MODEL_FILENAME)
+z, mu, log_var = q(tf.zeros(DATA_SHAPE))
+show_samples(z, z, mu, "title")
 plt.show()

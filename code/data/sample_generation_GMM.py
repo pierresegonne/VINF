@@ -36,9 +36,9 @@ def multivariate_gaussian_2d(n_components, n_samples=100, span=[-10,10]):
 
 
 X, mus, sigmas, contours = multivariate_gaussian_2d(8, n_samples=200)
-SAVE_DATA_NAME = 'data/mvg2D_X.pickle'
-SAVE_PARAMS_NAME = 'data/mvg2D_params.pickle'
-SAVE_CONTOURS_NAME = 'data/mvg2D_contours.pickle'
+SAVE_DATA_NAME = 'mvg2D_X.pickle'
+SAVE_PARAMS_NAME = 'mvg2D_params.pickle'
+SAVE_CONTOURS_NAME = 'mvg2D_contours.pickle'
 serialize_object(X, SAVE_DATA_NAME)
 serialize_object({'mus': mus, 'sigmas': sigmas}, SAVE_PARAMS_NAME)
 serialize_object(contours, SAVE_CONTOURS_NAME)

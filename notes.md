@@ -146,17 +146,15 @@ Thus for a succession of k mappings:
 $$ z_{K} = f_{K} \circ ... \circ f_{1} (z_{0})$$
 $$ \ln(q_{K}(z_{K}) = \ln(q_{0}(z_{0})) - \sum_{k=1}^{K} \ln|det\frac{\partial f_{k}}{\partial z_{k-1}}|$$
 
-Exemple in 1D: Let $ z_{0} \sim q_{o}(z_{0}) $ and $ z_{1} \sim q_{1}(z_{1}) $ such that $ z_{1} = f(z_{0}) $ with f invertible and smooth such that $ f^{-1}(z_{1}) = z_{0} $. Both distribution $ q_{0} $ and $ q_{1} $ have integrals that sum up to 1. So,
-
-$$ \int_{-\inf}^{\inf} q_{0}(z_{0})dz_{0} = \int_{-\inf}^{\inf} q_{1}(z_{1})dz_{1} $$
+Exemple in 1D: Let $ z_{0} \sim q_{o}(z_{0}) $ and $ z_{1} \sim q_{1}(z_{1}) $ such that $ z_{1} = f(z_{0}) $ with f invertible and smooth such that $ f^{-1}(z_{1}) = z_{0} $. It can be seen as a [change of variables](https://en.wikipedia.org/wiki/Probability_density_function#Function_of_random_variables_and_change_of_variables_in_the_probability_density_function), for which the differential area must be invariant under change of variables.
 
 Therefore,
 
-$$ q_{1}(z_{1}) = q_{0}(z_{0})\frac{dz_{0}}{dz_{1}} = q_{0}(z_{0})\frac{df^{-1}(z_{1})}{dz_{1}} $$
+$$ q_{1}(z_{1}) = q_{0}(z_{0})|\frac{dz_{0}}{dz_{1}}| = q_{0}(z_{0})|\frac{df^{-1}(z_{1})}{dz_{1}}| $$
 
 Which in turns, thanks to the inverse function theorem yields:
 
-$$ q_{1}(z_{1}) = q_{0}(z_{0})(\frac{df(z_{0})}{dz_{0}})^{-1}$$
+$$ q_{1}(z_{1}) = q_{0}(z_{0})|\frac{df(z_{0})}{dz_{0}}|^{-1}$$
 
 _note_: absolute value of f can be considered to make sure its rate of change is positive.
 
@@ -273,7 +271,31 @@ For the dilatation around a point
 
 ## Normalizing Flows as Neural Network
 
-TODO
+### 1D
+
+> ![1D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1D_posterior.png)
+
+### 2D
+
+![Figure Eight Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_distribution.png)
+
+>![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_z0.png)
+
+>![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_zk.png)
+
+![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
+
+>![Banana Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_z0.png)
+
+>![Banana Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_zk.png)
+
+![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_distribution.png)
+
+>![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_z0.png)
+
+>![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_zk.png)
+
+
 
 # Unanswered Questions
 
