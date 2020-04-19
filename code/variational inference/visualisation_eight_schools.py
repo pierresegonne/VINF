@@ -26,6 +26,8 @@ mask_tau = (np.log(tau_prior) > -2) & (np.log(tau_prior) < 2.8)
 plt.figure()
 plt.scatter(np.log(tau_prior[mask_tau]), thetas_prior[mask_tau], color='gray', alpha=0.6)
 plt.scatter(tf.math.log(tau), thetas, color='crimson', alpha=0.6)
+plt.xlabel(r'$log(\tau)$')
+plt.ylabel(r'$\theta$')
 plt.legend(['True Posterior', 'q'])
 
 npdf = lambda x, m, s: np.exp(-(x-m)**2/(2*(s**2)))/np.sqrt(2*np.pi*(s**2))

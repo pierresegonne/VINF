@@ -29,6 +29,8 @@ plt.figure()
 plt.scatter(np.log(tau_prior[mask_tau]), thetas_prior[mask_tau], color='gray', alpha=0.6)
 plt.scatter(tf.math.log(tau), thetas, color='springgreen', alpha=0.6)
 plt.scatter(tf.math.log(tau0), thetas0, color='crimson', alpha=0.6)
+plt.xlabel(r'$log(\tau)$')
+plt.ylabel(r'$\theta$')
 
 plt.legend(['Posterior', 'qk', 'q0'])
 
