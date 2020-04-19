@@ -5,8 +5,8 @@ from distributions import *
 from flows import Flows
 
 def joint_pdf(z):
-    return pdf_2D(z, 'banana')
     #return pdf_1D(z, 'two_hills')
+    return pdf_2D(z, 'figure_eight')
 
 def variational_free_enery(joint_pdf, mu, log_var, z0, zk, log_det_jacobian):
     batch_size = z0.shape[0]
@@ -49,7 +49,7 @@ if __name__ == '__main__':
     d = 2
     DATA_SHAPE = (5000,d)
     N_FLOWS = 10
-    EPOCHS = 5000
+    EPOCHS = 10000
     # MISC
     TRAIN = True
     SAVE_MODEL = True

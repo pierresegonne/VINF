@@ -6,7 +6,7 @@ from tensorflow import math
 from tensorflow_probability import distributions as tfd
 
 AVAILABLE_1D_DISTRIBUTIONS = ['', 'two_hills']
-AVAILABLE_2D_DISTRIBUTIONS = ['', 'banana', 'circle', 'figure_eight']
+AVAILABLE_2D_DISTRIBUTIONS = ['', 'banana', 'circle', 'eight_schools', 'figure_eight']
 
 def pdf_2D(z, density_name=''):
     assert density_name in AVAILABLE_2D_DISTRIBUTIONS, "Incorrect density name."
@@ -29,6 +29,15 @@ def pdf_2D(z, density_name=''):
         exp2 = math.exp(-0.2 * ((z1 + 2) / 0.8) ** 2)
         u = 0.5 * ((norm - 4) / 0.4) ** 2 - math.log(exp1 + exp2)
         return math.exp(-u)
+    elif density_name == 'eight_schools':
+        y_i = 10
+        sigma_i = 10
+        thetas, mu, tau  = z[:, 0], z[:, 1], tf.maximum(z[:, 2], 0 + 1e-10)
+        likelihood = tfd.Normal(loc=thetas, scale=sigma_i)
+        prior_theta = tfd.Normal(loc=mu, scale=tau)
+        prior_mu = tfd.Normal(loc=0, scale=5)
+        prior_tau = tfd.HalfCauchy(loc=0, scale=5)
+        return likelihood.prob(y_i) * prior_theta.prob(thetas) * prior_mu.prob(mu) * prior_tau.prob(tau)
     elif density_name == 'figure_eight':
         mu1 = 1 * np.array([-1,-1], dtype='float32')
         mu2 = 1 * np.array([1,1], dtype='float32')

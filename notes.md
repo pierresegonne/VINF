@@ -24,9 +24,12 @@ $ \require{ams} $
 
 ### Table of content
 
-1. [Variational Inference and Mean Field Approximation](#mean-field-approximation)
-    * [Expectation Derivation](#expectation)
-    * [Maximization Derivation](#maximization)
+1. [Introduction to Variational Inference](#introduction-to-variational-inference)
+    * [Variational Inference](#variational-inference)
+    * [Mean Field Approximation](#mean-field-approximation)
+    * [Example, Mixture of Gaussians](#mixture-of-gaussians)
+        * [Expectation Derivation](#expectation)
+        * [Maximization Derivation](#maximization)
 2. [Understanding Normalizing Flows](#normalizing-flows)
     * [Finite Flows](#finite-flows)
     * [Planar Flows](#planar-flows)
@@ -36,13 +39,19 @@ $ \require{ams} $
         * [Radial Flows Derivation](#radial-flow-derivation)
         * [Radial Flows Visualization](#radial-flow-visualization)
 3. [Implement Normalizing Flows](#normalizing-flows-as-neural-network)
+4. [Evaluating Variational Inference](#evaluating-variational-inference)
 
 [Unanswered Questions](#unanswered-questions)
 
 [Misc](#misc)
 
+## Introduction to Variational Inference
 
-## Mean Field Approximation
+### Variational Inference
+
+### Mean Field Approximation
+
+### Mixture of Gaussians
 
 From Bishop 2006, we know that for a mixture of gaussians, we can use the following model:
 
@@ -60,7 +69,7 @@ $$ p(X|Z,\Pi,\mu,\Lambda) = \prod_{n=1}^{N}\prod_{k=1}^{K} \mathcal{N}(x_{n}|\mu
 
 With the mean field approximation $ q(Z,\Pi,\mu,\Lambda) = q(Z)q(\Pi,\mu,\Lambda) $ that splits the latent variables from the parameters of the model, iterative update rules, similar to EM can be derived:
 
-### Expectation
+#### Expectation
 
 Approximating the distribution q results in the necessity to compute:
 
@@ -126,7 +135,7 @@ which finally yields, as $ \mathbb{E}(\Lambda_{k}) = \nu_{k}W_{k}$
 $$ = \frac{D}{\beta_{k}} + \nu_{k}(x_{n}-m_{k})^{T}W_{k}(x_{n}-m_{k}) $$
 
 
-### Maximization
+#### Maximization
 
 TODO
 
@@ -271,35 +280,90 @@ For the dilatation around a point
 
 ## Normalizing Flows as Neural Network
 
-### 1D
 
-> ![1D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1D_posterior.png)
 
-### 2D
+## Evaluating Variational Inference
+
+### Examples
+
+#### 1D
+
+We consider a model with a single parameter $\theta$:
+
+$$ y_{i} = \theta_{i}^{2} + \epsilon_{i} $$
+
+Where $ \epsilon_{i} \sim \mathcal{N}(0, \sigma^{2}) $, which means that $ y_{i} | \theta_{i} \sim \mathcal{N}(\theta_{i}^{2}, \sigma^{2}) $
+
+It will be assumed that theta is sampled from a univariate gaussian prior:
+
+$$ \theta \sim \mathcal{N}(0,1) $$
+
+By Bayes theorem, the true posterior can be expressed:
+
+$$ p(\theta_{i}|y_{i}) \propto p(y_{i}|\theta_{i})p(\theta_{i}) = \mathcal{N}(y_{i}|\theta_{i}^{2}, \sigma^{2})\mathcal{N}(\theta_{i}|0,1) $$
+
+The following is obtained for $ y = 0.5 $, $ \sigma^{2} = 0.1 $
+
+![Two hills VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_vi_distribution.png)
+
+![Two hills VI+NF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_nf_distribution_q0.png)
+
+![Two hills VI+NF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_nf_distribution_qk.png)
+
+
+#### 2D
+
+__Figure Eight__
+
+Let's consider a mixture of gaussians with a 2D parameter vector $ \theta $ sampled from an improper uniform prior.
+
+$$ \theta \sim \mathcal{U} $$
+
+Considering a gaussian mixture likelihood:
+
+$$ p(y|\theta) = 0.5\mathcal{N}(\theta|\mu_{1},\Sigma) + 0.5\mathcal{N}(\theta|\mu_{2},\Sigma) $$
+
+Then the posterior is also a mixture of gaussians:
+
+$$ p(\theta|y) \propto p(y|\theta) =  0.5\mathcal{N}(\theta|\mu_{1},\Sigma) + 0.5\mathcal{N}(\theta|\mu_{2},\Sigma) $$
+
+illustrated in the following figure:
 
 ![Figure Eight Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_distribution.png)
 
->![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_z0.png)
+![Figure Eight VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_vi_distribution.png)
 
->![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_zk.png)
+![Figure Eight VI+NF Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_nf_distribution.png)
+
+The two following figures illustrate how the flows warp the initial distribution to fit the posterior more closely.
+
+![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_z0.png)
+
+![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_zk.png)
+
+__Banana__
 
 ![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
 
->![Banana Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_z0.png)
+![Banana Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_z0.png)
 
->![Banana Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_zk.png)
+![Banana Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_zk.png)
+
+__Circle__
 
 ![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_distribution.png)
 
->![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_z0.png)
+![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_z0.png)
 
->![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_zk.png)
+![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_zk.png)
+
+__Eight Schools__
 
 
 
 # Unanswered Questions
 
-* Why does Bishop say that the variance of $q(z)$ is controlled by the direction of smalles variance of $p(z)$? (page 467 in the paragraph after equation (10.15))
+* Why does Bishop say that the variance of $q(z)$ is controlled by the direction of smalles variance of $p(z)$? (page 467 in the paragraph after equation (10.15)) 🆗
 
 >I implemented my own version of that mean field approxmation, and it results that the approximated posterior q(z) has variance: $$ Var(q(z)) = \begin{bmatrix} \Lambda_{11} & 0\\ 0 & \Lambda_{22} \end{bmatrix} $$ Resulting in the following distributions:
 
@@ -321,11 +385,13 @@ For the dilatation around a point
 
 >The parameters of the different mixture elements have a known distribution (see the first part for that), but how can one use the following ? $$ p(\mu | \Lambda)p(\Lambda) = p(\mu , \Lambda) = \prod_{k=1}^{K}\mathcal{N}(\mu_{k} | m_{0}, (\beta_{0}\Lambda_{k})^{-1})\mathcal{W}(\Lambda_{k} | W_{0}, \nu_{0}) $$ In my implementation, I cannot access directly the Wishart component $ \Lambda_{k} $.
 
+> __TODO__ add derivation and formulation of pdf as in written notes.
+
 * What dataset will be used for testing the neural network implementation ?
 
 >First some test distributions can be used to verify the ability of the flow to fit non-trivial distributions. Then, it would be usefull to use a broad dataset to train a VAE where the encoder is enriched with normalizing flows (ex CIFAR10?).
 
-* What non-trivial distributions could be used to test the ability of a finite set of flows to fit?
+* What non-trivial distributions could be used to test the ability of a finite set of flows to fit? 🆗
 
 >[Yes but did it work?]() presents a way to conduct a diagnostic of how close an approximated posterior distribtion fits, but I am not sure yet on what to use from that. Otherwise I implemented a [banana distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/banana.py) and a [circle distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/circle.py).
 ![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
@@ -336,7 +402,7 @@ For the dilatation around a point
 
 >After going through relevant conferences from [ICML Normalizing Flow Workshop](https://icml.cc/Conferences/2019/ScheduleMultitrack?event=3521), no type of other flow was discussed, only some extension of planar flow presented here [video](https://slideslive.com/38917902/householder-meets-sylvester-normalizing-flows-for-variational-inference), [paper](https://arxiv.org/pdf/1803.05649.pdf)
 
-* Is there a way to prove that the planar flow for example results in a normalized distribution?
+* Is there a way to prove that the planar flow for example results in a normalized distribution? 🆗
 
 >To show that it is the case, one would need to prove $ \int_{-\inf}^{\inf} q_{1}(z_{1})dz_{1} = 1$
 

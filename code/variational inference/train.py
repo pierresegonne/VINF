@@ -5,6 +5,7 @@ from distributions import *
 from model import GaussianWithReparametrization
 
 def joint_pdf(z):
+    #return pdf_1D(z, 'two_hills')
     return pdf_2D(z, 'figure_eight')
 
 def variational_free_enery(joint_pdf, z, mu, log_var):
@@ -44,7 +45,7 @@ if __name__ == '__main__':
 
     # PARAMETERS
     d = 2
-    DATA_SHAPE = (5000,d)
+    DATA_SHAPE = (3000,d)
     EPOCHS = 5000
     # MISC
     TRAIN = True
