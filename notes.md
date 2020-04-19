@@ -335,11 +335,67 @@ illustrated in the following figure:
 
 ![Figure Eight VI+NF Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_nf_distribution.png)
 
-The two following figures illustrate how the flows warp the initial distribution to fit the posterior more closely.
+The two following figures illustrate how the flows warp the initial distribution to fit the posterior more closely. The original gaussian, $q0$, when sampled, generates the following set of points
 
 ![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_z0.png)
 
+While after the flows, the resulting distribution $qk$, generates:
+
 ![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_zk.png)
+
+__Eight Schools__
+
+The Eight Schools model is the simplest Bayesian hierarchical normal model. Given a set of schools in which a treatment is tested, each of them has to report the mean effect of the treatment $y_{i}$ and its associated standard deviation $\sigma_{i}$. All treatments are supposed independent from each other.
+
+The following model postulates that the mean effect of treatment $y_{i}$ is sampled from a normal distribution centered around the true __latent__ mean effect of the treatment, $\theta_{i}$:
+
+$$ y_{i} | \theta_{i} \sim \mathcal{N}(\theta_{i}, \sigma_{i}^{2}) $$
+
+These latent mean effect of treatment are themselves sampled from a shared normal distribution (the same treatment being tested in different schools) with parameters $\mu$ and $\tau$:
+
+$$ \theta_{i} | \mu, \tau \sim \mathcal{N}(\mu, \tau^{2}) $$
+
+Such that the parameters themselves have priors
+
+$$ \mu \sim \mathcal{N}(0,5) $$
+$$ \tau \sim \text{Half-Cauchy}(0,5) $$
+
+Representing the model as a graphical model can be useful to understand the model.
+
+![Eight Schools Graphical Model](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_gm.png)
+
+Indeed, it makes it obvious that
+
+$$ p(y_{i}, \theta_{i}, \sigma_{i}, \mu, \tau) = p(y_{i}| \theta_{i}, \sigma_{i})p(\theta_{i} | \mu, \tau)p(\mu)p(\tau) = \mathcal{N}(y_{i}|\theta_{i},\sigma_{i}^{2})\mathcal{N}(\theta_{i}|\mu,\tau^{2})\mathcal{N}(\mu|0,5)\text{Half-Cauchy}(\tau|0,5)$$
+
+And thus the posterior distribution can be formulated as:
+
+$$ p(\theta_{i}, \mu, \tau | y_{i}, \sigma_{i}) \propto p(y_{i}| \theta_{i}, \sigma_{i})p(\theta_{i} | \mu, \tau)p(\mu)p(\tau) = \mathcal{N}(y_{i}|\theta_{i},\sigma_{i}^{2})\mathcal{N}(\theta_{i}|\mu,\tau^{2})\mathcal{N}(\mu|0,5)\text{Half-Cauchy}(\tau|0,5) $$
+
+In the case of standard variational inference, the approximated posterior will be:
+
+$$ \theta_{i}, \mu, \tau \sim \mathcal{N}(m, \Sigma) $$
+
+The following figure shows the learned distributions for the latent variable $\theta$ and the parameters $\mu$ and $\tau$
+
+![Eight Schools VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_vi_distributions.png)
+
+And the following displays the scatter of samples from q for $log(\tau)$ (x-axis) and $\theta$ (y-axis):
+
+![Eight Schools VI Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_vi_theta_logtau.png)
+
+Using normalizing flows allows a closer fit, especially because it allows the original gaussian approximating $\tau$ to fit the true half-cauchy prior very closely. As can be seen in the following:
+
+For $q0$
+
+![Eight Schools VI+NF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_distributions_q0.png)
+
+For $qk$
+
+![Eight Schools VI+NF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_distributions_qk.png)
+
+![Eight Schools VI+NF Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_theta_logtau.png)
+
 
 __Banana__
 
@@ -356,9 +412,6 @@ __Circle__
 ![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_z0.png)
 
 ![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_zk.png)
-
-__Eight Schools__
-
 
 
 # Unanswered Questions
@@ -389,7 +442,7 @@ __Eight Schools__
 
 * What dataset will be used for testing the neural network implementation ?
 
->First some test distributions can be used to verify the ability of the flow to fit non-trivial distributions. Then, it would be usefull to use a broad dataset to train a VAE where the encoder is enriched with normalizing flows (ex CIFAR10?).
+>First some test distributions can be used to verify the ability of the flow to fit non-trivial distributions. Then, it would be useful to use a broad dataset to train a VAE where the encoder is enriched with normalizing flows (ex CIFAR10?).
 
 * What non-trivial distributions could be used to test the ability of a finite set of flows to fit? 🆗
 
