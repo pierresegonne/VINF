@@ -9,14 +9,13 @@ from target_distributions import get_log_joint_pdf
 # Disable CPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
-def mean_field_elbo(joint_pdf, z, mu, log_var):
+def mean_field_elbo(log_joint_pdf, z, mu, log_var):
     batch_size = z.shape[0]
 
     # Assuming that all factors are independent
     normal = tfp.distributions.Normal(loc=mu, scale=tf.math.exp(0.5 * log_var))
     log_qz = tf.math.reduce_sum(normal.log_prob(z))
-    # TODO replace the joint pdf by log_joint_pdf
-    neg_log_likelihood = -tf.math.reduce_sum(tf.math.log(joint_pdf(z) + 1e-10))
+    neg_log_likelihood = -tf.math.reduce_sum(log_joint_pdf(z))
 
     return (log_qz + neg_log_likelihood) / batch_size
 
@@ -26,7 +25,7 @@ def planar_flows_elbo(joint_pdf, z0, zk, log_det_jacobian, mu, log_var):
     normal = tfp.distributions.Normal(loc=mu, scale=tf.math.exp(0.5 * log_var))
     log_qz0 = normal.log_prob(z0)
     log_qzk = tf.math.reduce_sum(log_qz0) - tf.math.reduce_sum(log_det_jacobian)
-    neg_log_likelihood = -tf.math.reduce_sum(tf.math.log(joint_pdf(zk) + 1e-10)) # * beta?
+    neg_log_likelihood = -tf.math.reduce_sum(log_joint_pdf(zk))
 
     return (log_qzk + neg_log_likelihood) / batch_size
 
@@ -76,7 +75,7 @@ if __name__ == '__main__':
     mean_field
     planar_flows
     """
-    model_choice = 'planar_flows'
+    model_choice = 'mean_field'
 
     training_parameters = get_training_parameters(target)
 

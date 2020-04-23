@@ -49,7 +49,7 @@ if __name__ == '__main__':
     mean_field
     planar_flows
     """
-    model_choice = 'planar_flows'
+    model_choice = 'mean_field'
 
     training_parameters = get_training_parameters(target)
 
