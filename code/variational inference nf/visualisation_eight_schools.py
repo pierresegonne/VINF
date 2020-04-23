@@ -9,7 +9,7 @@ MODEL_FILENAME = 'temp_weights_eight_schools.h5'
 
 d = 3
 DATA_SHAPE = (2500,3)
-N_FLOWS = 20
+N_FLOWS = 30
 q = Flows(d=3, n_flows=N_FLOWS, shape=DATA_SHAPE)
 q(tf.zeros(DATA_SHAPE))
 q.load_weights(MODEL_FILENAME)
@@ -17,6 +17,9 @@ z0, zk, log_det_jacobian, mu, log_var = q(tf.zeros(DATA_SHAPE))
 
 thetas0, mu0, tau0 = z0[:, 0], z0[:, 1], z0[:, 2]
 thetas, mu, tau  = zk[:, 0], zk[:, 1], zk[:, 2]
+
+thetas0, mu0, log_tau0 = z0[:, 0], z0[:, 1], z0[:, 2]
+thetas, mu, log_tau  = zk[:, 0], zk[:, 1], zk[:, 2]
 
 # Prior
 N = 5000
@@ -27,8 +30,8 @@ mask_tau = (np.log(tau_prior) > -2) & (np.log(tau_prior) < 2.8)
 
 plt.figure()
 plt.scatter(np.log(tau_prior[mask_tau]), thetas_prior[mask_tau], color='gray', alpha=0.6)
-plt.scatter(tf.math.log(tau), thetas, color='springgreen', alpha=0.6)
-plt.scatter(tf.math.log(tau0), thetas0, color='crimson', alpha=0.6)
+plt.scatter(log_tau, thetas, color='springgreen', alpha=0.6)
+plt.scatter(log_tau0, thetas0, color='crimson', alpha=0.6)
 plt.xlabel(r'$log(\tau)$')
 plt.ylabel(r'$\theta$')
 
@@ -52,7 +55,7 @@ ax2.plot(bins, npdf(bins, 0, 5),
     linewidth=2, color='r')
 ax2.title.set_text('Distribution Mu')
 ax2.legend(['Prior', 'Learned Distribution'])
-count, bins, ignored = ax3.hist(tau0.numpy(), 50, density=True, color='skyblue')
+count, bins, ignored = ax3.hist(tf.math.exp(log_tau0).numpy(), 50, density=True, color='skyblue')
 ax3.plot(bins, hcpdf(bins, 0, 5),
     linewidth=2, color='r')
 ax3.title.set_text('Distribution Tau')
@@ -68,7 +71,7 @@ ax2.plot(bins, npdf(bins, 0, 5),
     linewidth=2, color='r')
 ax2.title.set_text('Distribution Mu')
 ax2.legend(['Prior', 'Learned Distribution'])
-count, bins, ignored = ax3.hist(tau.numpy(), 50, density=True, color='steelblue')
+count, bins, ignored = ax3.hist(tf.math.exp(log_tau).numpy(), 50, density=True, color='steelblue')
 ax3.plot(bins, hcpdf(bins, 0, 5),
     linewidth=2, color='r')
 ax3.title.set_text('Distribution Tau')

@@ -32,12 +32,12 @@ def pdf_2D(z, density_name=''):
     elif density_name == 'eight_schools':
         y_i = 10
         sigma_i = 10
-        thetas, mu, tau  = z[:, 0], z[:, 1], tf.maximum(z[:, 2], 0 + 1e-10)
+        thetas, mu, log_tau  = z[:, 0], z[:, 1], z[:, 2]
         likelihood = tfd.Normal(loc=thetas, scale=sigma_i)
-        prior_theta = tfd.Normal(loc=mu, scale=tau)
+        prior_theta = tfd.Normal(loc=mu, scale=math.exp(log_tau))
         prior_mu = tfd.Normal(loc=0, scale=5)
         prior_tau = tfd.HalfCauchy(loc=0, scale=5)
-        return likelihood.prob(y_i) * prior_theta.prob(thetas) * prior_mu.prob(mu) * prior_tau.prob(tau)
+        return likelihood.prob(y_i) * prior_theta.prob(thetas) * prior_mu.prob(mu) * prior_tau.prob(math.exp(log_tau)) * math.exp(log_tau)
     elif density_name == 'figure_eight':
         mu1 = 1 * np.array([-1,-1], dtype='float32')
         mu2 = 1 * np.array([1,1], dtype='float32')

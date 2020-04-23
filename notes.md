@@ -45,6 +45,8 @@ $ \require{ams} $
 
 [Misc](#misc)
 
+[TODO](#todo)
+
 ## Introduction to Variational Inference
 
 ### Variational Inference
@@ -477,6 +479,16 @@ __Circle__
 * If these flows are used in the setting of a VAE, what kind of loss can be used?
 
 > Basic VAE uses ELBO.
+
+# TODO
+
+* Refactor code to stop duplication
+
+* Finish mean field mixture study
+
+* Implement Radial Flows
+
+* Refactor to use bijectors [to check](https://blog.evjang.com/2018/01/nf1.html) [to check](https://github.com/LukasRinder/normalizing-flows)
 
 # MISC
 

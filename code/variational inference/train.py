@@ -6,7 +6,7 @@ from model import GaussianWithReparametrization
 
 def joint_pdf(z):
     #return pdf_1D(z, 'two_hills')
-    return pdf_2D(z, 'figure_eight')
+    return pdf_2D(z, 'eight_schools')
 
 def variational_free_enery(joint_pdf, z, mu, log_var):
     batch_size = z.shape[0]
@@ -44,13 +44,13 @@ def train(model, epochs=10):
 if __name__ == '__main__':
 
     # PARAMETERS
-    d = 2
+    d = 3
     DATA_SHAPE = (3000,d)
     EPOCHS = 5000
     # MISC
     TRAIN = True
     SAVE_MODEL = True
-    MODEL_FILENAME = 'temp_weights_figure_eight.h5'
+    MODEL_FILENAME = 'temp_weights_eight_schools.h5'
 
     # Train
     q = GaussianWithReparametrization(d=d, shape=DATA_SHAPE)
