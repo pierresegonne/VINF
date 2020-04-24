@@ -69,7 +69,7 @@ if __name__ == '__main__':
     figure_eight
     eight_schools
     """
-    target = 'two_hills'
+    target = 'figure_eight'
 
     """ Model for Inference | Possible Choices:
     mean_field

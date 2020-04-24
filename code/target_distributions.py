@@ -63,7 +63,7 @@ def eight_schools_log_pdf(z):
     prior_theta = tfd.Normal(loc=mu, scale=math.exp(log_tau))
     prior_mu = tfd.Normal(loc=0, scale=5)
     prior_tau = tfd.HalfCauchy(loc=0, scale=5)
-    det_jac = math.log(math.exp(log_tau)) # kept log(exp()) for mathematical understanding.
+    log_det_jac = math.log(math.exp(log_tau)) # kept log(exp()) for mathematical understanding.
 
     return likelihood.log_prob(y_i) + prior_theta.log_prob(thetas) + prior_mu.log_prob(mu) + prior_tau.log_prob(math.exp(log_tau)) + log_det_jac
 
