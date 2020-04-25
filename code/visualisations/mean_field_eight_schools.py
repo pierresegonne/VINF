@@ -1,26 +1,34 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import pickle
 import tensorflow as tf
+import sys
 
+sys.path.append("../")
+
+from parameters import SAMPLES_SAVES_EXTENSION, SAMPLES_SAVES_FOLDER, VISUALISATIONS_FOLDER
 from scipy.stats import halfcauchy
+
+SAMPLES_NAME = 'eight_schools'
 
 def visualise(q, shape):
     z, mu, log_var = q(tf.zeros(shape))
 
-    thetas, mu, tau  = z[:, 0], z[:, 1], z[:, 2]
+    thetas, mu, log_tau  = z[:, 0], z[:, 1], z[:, 2]
 
-    # Prior
-    N = 5000
-    mu_prior = np.random.normal(loc=0, scale=5, size=N)
-    tau_prior = halfcauchy.rvs(loc=0, scale=5, size=N)
-    thetas_prior = np.random.normal(loc=mu_prior, scale=tau_prior, size=N)
-    mask_tau = (np.log(tau_prior) > -2) & (np.log(tau_prior) < 2.8)
+    i = 0
+    #thetas, mu, log_tau = thetas[i, :], mu[i, :], log_tau[i, :]
+
+    # True posterior samples
+    with open(f"{VISUALISATIONS_FOLDER}/{SAMPLES_SAVES_FOLDER}/{SAMPLES_NAME}.{SAMPLES_SAVES_EXTENSION}", 'rb') as f:
+        original_samples_trace = pickle.load(f)
+    n_burn = 1000
 
     plt.figure()
-    plt.scatter(np.log(tau_prior[mask_tau]), thetas_prior[mask_tau], color='gray', alpha=0.6)
-    plt.scatter(tf.math.log(tau), thetas, color='crimson', alpha=0.6)
+    plt.scatter(np.log(original_samples_trace['tau'][n_burn:]), original_samples_trace['theta'][:,i][n_burn:], color='gray', alpha=0.6)
+    plt.scatter(log_tau, thetas, color='crimson', alpha=0.6)
     plt.xlabel(r'$log(\tau)$')
-    plt.ylabel(r'$\theta$')
+    plt.ylabel(r'$\theta_{i}$')
     plt.legend(['True Posterior', 'q'])
 
     npdf = lambda x, m, s: np.exp(-(x-m)**2/(2*(s**2)))/np.sqrt(2*np.pi*(s**2))
@@ -39,7 +47,7 @@ def visualise(q, shape):
         linewidth=2, color='r')
     ax2.title.set_text('Distribution Mu')
     ax2.legend(['Prior', 'Learned Distribution'])
-    count, bins, ignored = ax3.hist(tau.numpy(), 50, density=True, color='skyblue')
+    count, bins, ignored = ax3.hist(tf.math.exp(log_tau).numpy(), 50, density=True, color='skyblue')
     ax3.plot(bins, hcpdf(bins, 0, 5),
         linewidth=2, color='r')
     ax3.title.set_text('Distribution Tau')

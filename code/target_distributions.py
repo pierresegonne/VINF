@@ -18,12 +18,12 @@ banana_scale = tf.linalg.cholesky(banana_cov)
 figure_eight_mu1 = 1 * np.array([-1,-1], dtype='float32')
 figure_eight_mu2 = 1 * np.array([1,1], dtype='float32')
 figure_eight_scale = 0.45 * np.array([1,1], dtype='float32')
-figure_eight_cov = 0.45 * np.array([[1,0],[0,1]])
+figure_eight_cov = 0.45 * np.array([[1,0],[0,1]], dtype='float32')
 figure_eight_pi = 0.5
 
 # source http://www.stat.columbia.edu/~gelman/book/BDA3.pdf p120
-eight_schools_y = np.array([28,8,-3,7,-1,1,18,12])
-eight_schools_sigma = np.array([15,10,16,11,9,11,10,18])
+eight_schools_y = np.array([28,8,-3,7,-1,1,18,12], dtype='float32')
+eight_schools_sigma = np.array([15,10,16,11,9,11,10,18], dtype='float32')
 
 
 ## ------------------------
@@ -67,16 +67,18 @@ def figure_eight_log_pdf(z):
 
 def eight_schools_log_pdf(z):
 
+    # z (8,3,5000)
+    #thetas, mu, log_tau  = z[:, 0, :], z[:, 1, :], z[:, 2, :]
     thetas, mu, log_tau  = z[:, 0], z[:, 1], z[:, 2]
+    i = 0
 
-    likelihood = tfd.Normal(loc=thetas, scale=eight_schools_sigma) # N thetas
+    likelihood = tfd.Normal(loc=thetas, scale=eight_schools_sigma[i]) # N thetas
     prior_theta = tfd.Normal(loc=mu, scale=math.exp(log_tau))
     prior_mu = tfd.Normal(loc=0, scale=5)
     prior_tau = tfd.HalfCauchy(loc=0, scale=5)
     log_det_jac = math.log(math.exp(log_tau)) # kept log(exp()) for mathematical understanding.
 
-    return likelihood.log_prob(eight_schools_y) + prior_theta.log_prob(thetas) + prior_mu.log_prob(mu) + prior_tau.log_prob(math.exp(log_tau)) + log_det_jac
-
+    return likelihood.log_prob(eight_schools_y[i]) + prior_theta.log_prob(thetas) + prior_mu.log_prob(mu) + prior_tau.log_prob(math.exp(log_tau)) + log_det_jac
 
 def get_log_joint_pdf(target_distribution):
 

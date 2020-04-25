@@ -44,6 +44,8 @@ target_distributions = [
 existing_distributions = [distribution['name'] for distribution in target_distributions]
 # update the target disributions with shape attribute
 target_distributions = [{**distribution, **{'shape': (distribution['n_samples'],distribution['d'])}} for distribution in target_distributions]
+# Fix data shape for eight schools
+# target_distributions[-1]['shape'] = (8, 3, 5000)
 
 ## Model classes
 MEAN_FIELD = 'mean_field'

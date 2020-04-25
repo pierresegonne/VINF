@@ -19,7 +19,7 @@ def mean_field_elbo(log_joint_pdf, z, mu, log_var):
 
     return (log_qz + neg_log_likelihood) / batch_size
 
-def planar_flows_elbo(joint_pdf, z0, zk, log_det_jacobian, mu, log_var):
+def planar_flows_elbo(log_joint_pdf, z0, zk, log_det_jacobian, mu, log_var):
     batch_size = z0.shape[0]
 
     normal = tfp.distributions.Normal(loc=mu, scale=tf.math.exp(0.5 * log_var))
@@ -69,7 +69,7 @@ if __name__ == '__main__':
     figure_eight
     eight_schools
     """
-    target = 'figure_eight'
+    target = 'eight_schools'
 
     """ Model for Inference | Possible Choices:
     mean_field

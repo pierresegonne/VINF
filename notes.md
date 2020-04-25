@@ -495,3 +495,7 @@ __Circle__
 [blog post with pytorch implementation of flows](https://www.ritchievink.com/blog/2019/10/11/sculpting-distributions-with-normalizing-flows/)
 
 [ICML Normalizing Flow Workshop](https://icml.cc/Conferences/2019/ScheduleMultitrack?event=3521)
+
+[Bayesian Modelling Cookbook](https://eigenfoo.xyz/bayesian-modelling-cookbook/)
+
+[Tutorial PyMC3 Eight Schools](https://docs.pymc.io/notebooks/Diagnosing_biased_Inference_with_Divergences.html)
