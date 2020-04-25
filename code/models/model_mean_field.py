@@ -1,6 +1,10 @@
+import os
 import tensorflow as tf
 
 from models.shared import ParametrizedGaussian
+
+# Disable CPU warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 class MeanField(tf.keras.Model):
     def __init__(self, d=2, shape=(1000, 2)):

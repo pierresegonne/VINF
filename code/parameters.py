@@ -59,7 +59,12 @@ existing_models = [
 MODEL_SAVES_FOLDER = 'model_saves'
 MODEL_SAVE_EXTENSION = 'h5'
 
+## Saving samples
+SAMPLES_SAVES_FOLDER = 'samples'
+SAMPLES_SAVES_EXTENSION = 'npy'
 
+## Visualisations
+VISUALISATIONS_FOLDER = 'visualisations'
 
 ## ------
 ## Helping functions

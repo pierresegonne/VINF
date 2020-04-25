@@ -1,6 +1,13 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import tensorflow as tf
+import sys
+
+sys.path.append("../")
+
+from parameters import SAMPLES_SAVES_EXTENSION, SAMPLES_SAVES_FOLDER, VISUALISATIONS_FOLDER
+
+SAMPLES_NAME = 'banana'
 
 def show_samples(zk, z0, mu):
 
@@ -27,9 +34,13 @@ def visualise(q, shape):
     show_samples(z0, z0, mu)
     show_samples(zk, z0, mu)
 
+    with open(f"{VISUALISATIONS_FOLDER}/{SAMPLES_SAVES_FOLDER}/{SAMPLES_NAME}.{SAMPLES_SAVES_EXTENSION}", 'rb') as f:
+        original_samples = np.load(f)
+
     plt.figure()
     plt.scatter(z0[:,0], z0[:,1], color='crimson', alpha=0.6)
+    plt.scatter(original_samples[:,0], original_samples[:,1], color='gray', alpha=0.6)
     plt.scatter(zk[:,0], zk[:,1], color='springgreen', alpha=0.6)
-    plt.legend(['q0', 'qk'])
+    plt.legend(['q0', 'True Posterior', 'qk'])
 
     plt.show()

@@ -1,20 +1,22 @@
-import matplotlib.pyplot as plt
 import numpy as np
+import matplotlib.pyplot as plt
+import sys
 
+sys.path.append("../../")
+
+from parameters import SAMPLES_SAVES_EXTENSION
 from scipy.stats import multivariate_normal
+from target_distributions import banana_mu, banana_cov
 
-# Example parameters of multivariate
-mu = np.array([0.5,0.5])
-sig = np.array([[0.06,0.055],[0.055,0.06]])
+SAMPLES_NAME = 'banana'
 
 # Create grid and multivariate normal
-x = np.linspace(-1,1,100)
-y = np.linspace(-1,1,100)
+x = np.linspace(-2,2,200)
+y = np.linspace(-2,2,200)
 X, Y = np.meshgrid(x,y)
 pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X; pos[:, :, 1] = Y
-p = multivariate_normal(mu, sig)
-
+p = multivariate_normal(banana_mu, banana_cov)
 
 def banana_pdf(pos, p):
     """
@@ -25,18 +27,13 @@ def banana_pdf(pos, p):
     pos = np.vstack((pos[:,0],pos[:,0]**2 + pos[:,1])).T
     return p.pdf(pos).reshape((n1,n2))
 
-
-
-plt.figure()
-plt.contour(X,Y, banana_pdf(pos, p), cmap='magma')
-
-
-# Experiment to have a fake sampling using only the posterior value
-mask = (banana_pdf(pos, p) > 0.1 - np.random.normal(loc=0, scale=0.2))
+mask = (banana_pdf(pos, p) > 0.1 - np.random.normal(loc=0, scale=0.02, size=X.shape))
 pos = pos[mask]
+
+with open(f"{SAMPLES_NAME}.{SAMPLES_SAVES_EXTENSION}", 'wb') as f:
+    np.save(f, pos)
 
 plt.figure()
 plt.scatter(pos[:, 0], pos[:, 1])
 
 plt.show()
-

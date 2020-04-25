@@ -1,6 +1,10 @@
+import os
 import tensorflow as tf
 
 from models.shared import ParametrizedGaussian
+
+# Disable CPU warnings
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 """ Custom layers as flows """
 class PlanarFlow(tf.keras.layers.Layer):

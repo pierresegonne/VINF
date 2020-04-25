@@ -1,11 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
-# Example parameters of multivariate
-mu = np.array([0.5,0.5])
-sig = np.array([[0.06,0.055],[0.055,0.06]])
-
 # Create grid and multivariate normal
 x = np.linspace(-10,10,300)
 y = np.linspace(-10,10,300)
@@ -15,9 +10,7 @@ pos[:, :, 0] = X; pos[:, :, 1] = Y
 
 
 def circle_pdf(pos):
-    """
-    x, x**2 + y
-    """
+
     n1, n2, _ = pos.shape
     pos = pos.reshape(-1,2)
     z1, z2 = pos[:,0], pos[:,1]
