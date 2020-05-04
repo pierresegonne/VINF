@@ -16,7 +16,7 @@ def visualise(q, shape):
     lik = lambda x: npdf(two_hills_y, x**2, two_hills_sigma2)
     post_scaled = lambda x: prior(x)*lik(x)
 
-    count, bins, ignored = plt.hist(z.numpy(), 100, density=True, color='slategray', alpha=0.6)
-    plt.plot(bins, post_scaled(bins),linewidth=2, color='r')
-    plt.legend(['True Posterior', 'q'])
+    count, bins, ignored = plt.hist(z.numpy(), 100, density=True, color='slategray', alpha=0.6, label='True Posterior')
+    plt.plot(bins, post_scaled(bins),linewidth=2, color='r', label='q')
+    plt.legend()
     plt.show()

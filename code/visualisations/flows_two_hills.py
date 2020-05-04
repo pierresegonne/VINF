@@ -16,13 +16,13 @@ def visualise(q, shape):
     post_scaled = lambda x: prior(x)*lik(x)
 
     plt.figure()
-    count, bins, ignored = plt.hist(z0.numpy(), 100, density=True, color='slategray', alpha=0.6)
-    plt.plot(bins, post_scaled(bins), linewidth=2, color='r')
-    plt.legend(['True Posterior', 'q0'])
+    count, bins, ignored = plt.hist(z0.numpy(), 100, density=True, color='slategray', alpha=0.6, label='True Posterior')
+    plt.plot(bins, post_scaled(bins), linewidth=2, color='r', label=r'$q_{0}$')
+    plt.legend()
 
     plt.figure()
-    count, bins, ignored = plt.hist(zk.numpy(), 100, density=True, color='darkslategrey', alpha=0.6)
-    plt.plot(bins, post_scaled(bins), linewidth=2, color='r')
-    plt.legend(['True Posterior', 'qk'])
+    count, bins, ignored = plt.hist(zk.numpy(), 100, density=True, color='darkslategrey', alpha=0.6, label='True Posterior')
+    plt.plot(bins, post_scaled(bins), linewidth=2, color='r', label=r'$q_{k}$')
+    plt.legend()
 
     plt.show()

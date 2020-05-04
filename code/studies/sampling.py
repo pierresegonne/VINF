@@ -39,4 +39,5 @@ plt.figure()
 plt.scatter(np.log(centered_trace['tau'][2000:]), centered_trace['theta'][:,0][2000:], color='orange')
 plt.scatter(np.log(noncentered_trace['tau'][2000:]), noncentered_trace['theta'][:,0][2000:], color='green')
 plt.legend(['Centered', 'Non-Centered'])
+
 plt.show()

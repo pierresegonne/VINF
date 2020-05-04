@@ -2,6 +2,9 @@
 Gathers all parameters for the project/models
 """
 
+## Number of schools in eight schools model
+EIGHT_SCHOOL_K = 2
+
 ## Target Distributions, available cases
 target_distributions = [
     {
@@ -26,6 +29,34 @@ target_distributions = [
         'n_samples': 5000,
     },
     {
+        'name': 'energy_1',
+        'd': 2,
+        'epochs': 10000,
+        'n_flows': 2,
+        'n_samples': 500,
+    },
+    {
+        'name': 'energy_2',
+        'd': 2,
+        'epochs': 10000,
+        'n_flows': 16,
+        'n_samples': 5000,
+    },
+    {
+        'name': 'energy_3',
+        'd': 2,
+        'epochs': 9000,
+        'n_flows': 32,
+        'n_samples': 5000,
+    },
+    {
+        'name': 'energy_4',
+        'd': 2,
+        'epochs': 10000,
+        'n_flows': 32,
+        'n_samples': 5000,
+    },
+    {
         'name': 'figure_eight',
         'd': 2,
         'epochs': 5000,
@@ -34,9 +65,9 @@ target_distributions = [
     },
     {
         'name': 'eight_schools',
-        'd': 3,
-        'epochs': 10000,
-        'n_flows': 16,
+        'd': 2 + EIGHT_SCHOOL_K, # 8 thetas, mu and tau
+        'epochs': 35000,
+        'n_flows': 64,
         'n_samples': 5000,
     },
 ]
@@ -44,8 +75,6 @@ target_distributions = [
 existing_distributions = [distribution['name'] for distribution in target_distributions]
 # update the target disributions with shape attribute
 target_distributions = [{**distribution, **{'shape': (distribution['n_samples'],distribution['d'])}} for distribution in target_distributions]
-# Fix data shape for eight schools
-# target_distributions[-1]['shape'] = (8, 3, 5000)
 
 ## Model classes
 MEAN_FIELD = 'mean_field'

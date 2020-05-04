@@ -152,9 +152,9 @@ if True:
 
 # ======
 # Run
-n_layers = 1
+n_layers = 2
 
-PLANAR_FLOW = True
+PLANAR_FLOW = False
 RADIAL_FLOW = not PLANAR_FLOW
 
 if PLANAR_FLOW:

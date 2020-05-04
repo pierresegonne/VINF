@@ -18,9 +18,9 @@ pos[:, :, 0] = X; pos[:, :, 1] = Y
 
 # =======
 # Parameters
-w = np.array([[-1, 0]])
-b = 1
-u = np.array([[-0.9999, -0.9999]])
+w = np.array([[-1e-8, 1e-8]])
+b = 1e-8
+u = np.array([[-1e-8, -1e-8]])
 
 print('Hyperplane: {}x + {}y = -{}'.format(w[0,0],w[0,1],b))
 print('F Invertible: {}'.format((w@u.T)[0,0] >= -1))

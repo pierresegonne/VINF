@@ -43,9 +43,11 @@ $ \require{ams} $
 
 [Unanswered Questions](#unanswered-questions)
 
+[TODO](#todo)
+
 [Misc](#misc)
 
-[TODO](#todo)
+[References](#references)
 
 ## Introduction to Variational Inference
 
@@ -191,35 +193,40 @@ _note_: why the transpose act like this? [-> eq (69), page 10 of [matrix cookboo
 
 Resulting distributions, from a unit 2D gaussian originally:
 
-![Original Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/original_unit_gaussian_3D.png)
+![Original Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/original_unit_gaussian_3D.png)
 
-![Original Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/original_unit_gaussian_contour.png)
+![Original Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/original_unit_gaussian_contour.png)
 
 After a single flow, which contracts along the {y=1} hyperplan:
 
-![1 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1planar_flows_3D.png)
+![1 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/1planar_flows_3D.png)
 
-![1 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1planar_flows_contour.png)
+![1 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/1planar_flows_contour.png)
 
 After applying three other flows which expand along the {x=1} hyperplan:
 
-![2 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2planar_flows_3D.png)
+![2 Planar Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/2planar_flows_3D.png)
 
-![2 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2planar_flows_contour.png)
+![2 Planar Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/2planar_flows_contour.png)
 
 __Note__: I wrote a script to understand the influence of the flow on the resulting distribution, see below:
 
 For the contraction along {y=1}
 
-![Singular Planar Flow Factor Arg {y=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_planar_flow_arg_y=1.png)
+![Singular Planar Flow Factor Arg {y=1}](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_planar_flow_arg_y=1.png)
 
-![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_planar_flow_exp_y=1.png)
+![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_planar_flow_exp_y=1.png)
 
 For the expansion along {x=1}
 
-![Singular Planar Flow Factor Arg {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_planar_flow_arg_x=1.png)
+![Singular Planar Flow Factor Arg {x=1}](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_planar_flow_arg_x=1.png)
 
-![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_planar_flow_exp_x=1.png)
+![Singular Planar Flow Factor {x=1}](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_planar_flow_exp_x=1.png)
+
+__Note__: If the weights of the flows collapse to 0, due for example to a training error, then as the following figure shows, the flows will have have no effect on the original distribution, as they will converge towards the identity transformation:
+
+![Singular Planar Flow Factor Weights Collapse](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/1planar_flows_weights0.png)
+
 
 ### Radial Flows
 
@@ -255,29 +262,29 @@ From the same 2D unit gaussian, one can apply radial flows to shape new distribu
 
 After a single flow, which focus the distribution around the point `(0.75, 0.75)`:
 
-![1 Radial Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1radial_flows_3D.png)
+![1 Radial Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/1radial_flows_3D.png)
 
-![1 Radial Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/1radial_flows_contour.png)
+![1 Radial Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/1radial_flows_contour.png)
 
 After applying an other flow which dilates the distribution around the point `(0.85, 0.85)`:
 
-![2 Radial Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2radial_flows_3D.png)
+![2 Radial Flow Unit Gaussian 3D](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/2radial_flows_3D.png)
 
-![2 Radial Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/2radial_flows_contour.png)
+![2 Radial Flow Unit Gaussian Contour](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/2radial_flows_contour.png)
 
 __Note__: I wrote a script to understand the influence of the flow on the resulting distribution, see below:
 
 For the focusing of a point
 
-![Singular Radial Flow Factor Arg Focus](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_focus_arg.png)
+![Singular Radial Flow Factor Arg Focus](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_radial_flow_focus_arg.png)
 
-![Singular Radial Flow Factor Focus](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_focus_exp.png)
+![Singular Radial Flow Factor Focus](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_radial_flow_focus_exp.png)
 
 For the dilatation around a point
 
-![Singular Radial Flow Factor Arg Dila](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_dila_arg.png)
+![Singular Radial Flow Factor Arg Dila](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_radial_flow_dila_arg.png)
 
-![Singular Radial Flow Factor Dila](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/single_radial_flow_dila_exp.png)
+![Singular Radial Flow Factor Dila](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/single_radial_flow_dila_exp.png)
 
 
 ## Normalizing Flows as Neural Network
@@ -306,11 +313,11 @@ $$ p(\theta_{i}|y_{i}) \propto p(y_{i}|\theta_{i})p(\theta_{i}) = \mathcal{N}(y_
 
 The following is obtained for $ y = 0.5 $, $ \sigma^{2} = 0.1 $
 
-![Two hills VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_vi_distribution.png)
+![Two hills VI Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/two_hills_mf_distribution.png)
 
-![Two hills VI+NF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_nf_distribution_q0.png)
+![Two hills PF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/two_hills_pf_distribution_q0.png)
 
-![Two hills VI+NF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/two_hills_nf_distribution_qk.png)
+![Two hills PF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/two_hills_pf_distribution_qk.png)
 
 
 #### 2D
@@ -331,19 +338,19 @@ $$ p(\theta|y) \propto p(y|\theta) =  0.5\mathcal{N}(\theta|\mu_{1},\Sigma) + 0.
 
 illustrated in the following figure:
 
-![Figure Eight Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_distribution.png)
+![Figure Eight Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/figure_eight_distribution.png)
 
-![Figure Eight VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_vi_distribution.png)
+![Figure Eight VI Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/figure_eight_mf_distribution.png)
 
-![Figure Eight VI+NF Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_nf_distribution.png)
+![Figure Eight PF Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/figure_eight_pf_distribution.png)
 
 The two following figures illustrate how the flows warp the initial distribution to fit the posterior more closely. The original gaussian, $q0$, when sampled, generates the following set of points
 
-![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_z0.png)
+![Figure Eight Posterior z0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/figure_eight_pf_posterior_z0.png)
 
 While after the flows, the resulting distribution $qk$, generates:
 
-![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/figure_eight_posterior_zk.png)
+![Figure Eight Posterior zk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/figure_eight_pf_posterior_zk.png)
 
 __Eight Schools__
 
@@ -364,7 +371,7 @@ $$ \tau \sim \text{Half-Cauchy}(0,5) $$
 
 Representing the model as a graphical model can be useful to understand the model.
 
-![Eight Schools Graphical Model](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_gm.png)
+![Eight Schools Graphical Model](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_gm.png)
 
 Indeed, it makes it obvious that
 
@@ -380,40 +387,63 @@ $$ \theta_{i}, \mu, \tau \sim \mathcal{N}(m, \Sigma) $$
 
 The following figure shows the learned distributions for the latent variable $\theta$ and the parameters $\mu$ and $\tau$
 
-![Eight Schools VI Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_vi_distributions.png)
+![Eight Schools MF Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_mf_distributions.png)
 
 And the following displays the scatter of samples from q for $log(\tau)$ (x-axis) and $\theta$ (y-axis):
 
-![Eight Schools VI Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_vi_theta_logtau.png)
+![Eight Schools MF Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_mf_theta_logtau.png)
+
+for non-centered model:
+
+![Eight Schools MF Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_mf_distributions.png)
+
+![Eight Schools MF Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_mf_theta_logtau_noncentered.png)
+
 
 Using normalizing flows allows a closer fit, especially because it allows the original gaussian approximating $\tau$ to fit the true half-cauchy prior very closely. As can be seen in the following:
 
 For $q0$
 
-![Eight Schools VI+NF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_distributions_q0.png)
+![Eight Schools PF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_q0.png)
 
 For $qk$
 
-![Eight Schools VI+NF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_distributions_qk.png)
+![Eight Schools PF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_qk.png)
 
-![Eight Schools VI+NF Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/eight_schools_nf_theta_logtau.png)
+![Eight Schools PF Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_theta_logtau.png)
+
+For 64 flows:
+
+![Eight Schools PF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_q0_nflows64.png)
+
+![Eight Schools PF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_qk_nflows64.png)
+
+![Eight Schools PF Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_theta_logtau_nflows64.png)
+
+For 128 flows:
+
+![Eight Schools PF Distribution q0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_q0_nflows128.png)
+
+![Eight Schools PF Distribution qk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_distributions_qk_nflows128.png)
+
+![Eight Schools PF Theta Logtau](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/eight_schools_pf_theta_logtau_nflows128.png)
 
 
 __Banana__
 
-![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
+![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/banana_distribution.png)
 
-![Banana Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_z0.png)
+![Banana Posterior z0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/banana_pf_posterior_z0.png)
 
-![Banana Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_posterior_zk.png)
+![Banana Posterior zk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/banana_pf_posterior_zk.png)
 
 __Circle__
 
-![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_distribution.png)
+![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/circle_distribution.png)
 
-![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_z0.png)
+![Circle Posterior z0](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/circle_pf_posterior_z0.png)
 
-![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_posterior_zk.png)
+![Circle Posterior zk](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/circle_pf_posterior_zk.png)
 
 
 # Unanswered Questions
@@ -422,7 +452,7 @@ __Circle__
 
 >I implemented my own version of that mean field approxmation, and it results that the approximated posterior q(z) has variance: $$ Var(q(z)) = \begin{bmatrix} \Lambda_{11} & 0\\ 0 & \Lambda_{22} \end{bmatrix} $$ Resulting in the following distributions:
 
->![Comparison q,p for variance capture](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/pz_qz_variance_capture.png)
+>![Comparison q,p for variance capture](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/pz_qz_variance_capture.png)
 
 > My mistake was coming from the use of the precision matrix. In bishop $ \Lambda $ is the precision matrix (i.e $ \Sigma = \Lambda^{-1} $). Therefore considering:
 
@@ -434,7 +464,7 @@ __Circle__
 
 > where $ \Lambda_{11} $ is the element at indices 1,1 in the precision matrix. It gives the resulting result:
 
->![Comparison q,p for variance capture, correct](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/pz_qz_variance_capture_true.png)
+>![Comparison q,p for variance capture, correct](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/pz_qz_variance_capture_true.png)
 
 * How can one draw the contour plot of a mixture of multivariate gaussians in mean field approximation?
 
@@ -448,10 +478,10 @@ __Circle__
 
 * What non-trivial distributions could be used to test the ability of a finite set of flows to fit? 🆗
 
->[Yes but did it work?]() presents a way to conduct a diagnostic of how close an approximated posterior distribtion fits, but I am not sure yet on what to use from that. Otherwise I implemented a [banana distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/banana.py) and a [circle distribution](https://github.com/pierresegonne/VariationalInferenceNormalizingFlows/blob/master/Code/funky%20distributions/circle.py).
-![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/banana_distribution.png)
+>[Yes but did it work?]() presents a way to conduct a diagnostic of how close an approximated posterior distribtion fits, but I am not sure yet on what to use from that. Otherwise I implemented a [banana distribution](https://github.com/pierresegonne/VINF/blob/master/Code/funky%20distributions/banana.py) and a [circle distribution](https://github.com/pierresegonne/VINF/blob/master/Code/funky%20distributions/circle.py).
+![Banana Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/banana_distribution.png)
 
->![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VariationalInferenceNormalizingFlows/master/assets/circle_distribution.png)
+>![Circle Distribution](https://raw.githubusercontent.com/pierresegonne/VINF/master/assets/circle_distribution.png)
 
 * Are there any other types of finite flow we could consider?
 
@@ -482,8 +512,6 @@ __Circle__
 
 # TODO
 
-* Refactor code to stop duplication
-
 * Finish mean field mixture study
 
 * Implement Radial Flows
@@ -499,3 +527,99 @@ __Circle__
 [Bayesian Modelling Cookbook](https://eigenfoo.xyz/bayesian-modelling-cookbook/)
 
 [Tutorial PyMC3 Eight Schools](https://docs.pymc.io/notebooks/Diagnosing_biased_Inference_with_Divergences.html)
+
+# References
+
+1. Rezende, Danilo Jimenez, and Shakir Mohamed. "Variational inference with normalizing flows." arXiv preprint arXiv:1505.05770 (2015).
+
+```
+@article{rezende2015variational,
+  title={Variational inference with normalizing flows},
+  author={Rezende, Danilo Jimenez and Mohamed, Shakir},
+  journal={arXiv preprint arXiv:1505.05770},
+  year={2015}
+}
+```
+
+2. Yao, Yuling, et al. "Yes, but did it work?: Evaluating variational inference." arXiv preprint arXiv:1802.02538 (2018).
+
+```
+@article{yao2018yes,
+  title={Yes, but did it work?: Evaluating variational inference},
+  author={Yao, Yuling and Vehtari, Aki and Simpson, Daniel and Gelman, Andrew},
+  journal={arXiv preprint arXiv:1802.02538},
+  year={2018}
+}
+```
+
+3. Vehtari, Aki, et al. "Pareto smoothed importance sampling." arXiv preprint arXiv:1507.02646 (2015).
+
+```
+@article{vehtari2015pareto,
+  title={Pareto smoothed importance sampling},
+  author={Vehtari, Aki and Simpson, Daniel and Gelman, Andrew and Yao, Yuling and Gabry, Jonah},
+  journal={arXiv preprint arXiv:1507.02646},
+  year={2015}
+}
+```
+
+4. Kucukelbir, Alp, et al. "Automatic differentiation variational inference." The Journal of Machine Learning Research 18.1 (2017): 430-474.
+
+```
+@article{kucukelbir2017automatic,
+  title={Automatic differentiation variational inference},
+  author={Kucukelbir, Alp and Tran, Dustin and Ranganath, Rajesh and Gelman, Andrew and Blei, David M},
+  journal={The Journal of Machine Learning Research},
+  volume={18},
+  number={1},
+  pages={430--474},
+  year={2017},
+  publisher={JMLR. org}
+}
+```
+
+5. Bishop, Christopher M. Pattern recognition and machine learning. springer, 2006.
+
+```
+@book{bishop2006pattern,
+  title={Pattern recognition and machine learning},
+  author={Bishop, Christopher M},
+  year={2006},
+  publisher={springer}
+}
+```
+
+6. Papamakarios, George, Theo Pavlakou, and Iain Murray. "Masked autoregressive flow for density estimation." Advances in Neural Information Processing Systems. 2017.
+
+```
+@inproceedings{papamakarios2017masked,
+  title={Masked autoregressive flow for density estimation},
+  author={Papamakarios, George and Pavlakou, Theo and Murray, Iain},
+  booktitle={Advances in Neural Information Processing Systems},
+  pages={2338--2347},
+  year={2017}
+}
+```
+
+7. Kingma, Durk P., et al. "Improved variational inference with inverse autoregressive flow." Advances in neural information processing systems. 2016.
+
+```
+@inproceedings{kingma2016improved,
+  title={Improved variational inference with inverse autoregressive flow},
+  author={Kingma, Durk P and Salimans, Tim and Jozefowicz, Rafal and Chen, Xi and Sutskever, Ilya and Welling, Max},
+  booktitle={Advances in neural information processing systems},
+  pages={4743--4751},
+  year={2016}
+}
+```
+
+8. Oord, Aaron van den, et al. "Parallel wavenet: Fast high-fidelity speech synthesis." arXiv preprint arXiv:1711.10433 (2017).
+
+```
+@article{oord2017parallel,
+  title={Parallel wavenet: Fast high-fidelity speech synthesis},
+  author={Oord, Aaron van den and Li, Yazhe and Babuschkin, Igor and Simonyan, Karen and Vinyals, Oriol and Kavukcuoglu, Koray and Driessche, George van den and Lockhart, Edward and Cobo, Luis C and Stimberg, Florian and others},
+  journal={arXiv preprint arXiv:1711.10433},
+  year={2017}
+}
+```
