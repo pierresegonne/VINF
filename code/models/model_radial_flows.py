@@ -1,7 +1,8 @@
 import os
+
 import tensorflow as tf
 
-from models.shared import Flows, ParametrizedGaussian
+from models.shared import Flows
 
 # Disable CPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
@@ -50,7 +51,8 @@ class RadialFlow(tf.keras.layers.Layer):
         return self._normalized_beta
 
     def r(self, z):
-        return tf.norm(z - self.z_ref, ord='euclidean')**2
+        return tf.norm(z - self.z_ref)**2
+        # return tf.norm(z - self.z_ref, ord='euclidean')**2
 
     def h(self, r):
         return 1 / (tf.nn.relu(self.alpha) + r)
@@ -69,9 +71,10 @@ class RadialFlow(tf.keras.layers.Layer):
             z, log_det_jacobian = z_input, 0
 
         beta = self.normalized_beta
+        print(self.beta, self.alpha, self.normalized_beta)
         r = self.r(z)
 
-        log_det_jacobian += (self.N - 1)*tf.math.log(tf.math.abs(1 + beta*self.h(r))) \
+        log_det_jacobian += (self.d - 1)*tf.math.log(tf.math.abs(1 + beta*self.h(r))) \
             + tf.math.log(tf.math.abs(1 + beta*self.h(r) + beta*self.h_p(r)*r))
 
         fz = z + beta*self.h(r)*(z - self.z_ref)

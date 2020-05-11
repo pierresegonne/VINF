@@ -1,10 +1,10 @@
 import numpy as np
 from prml.nn.array.array import asarray
+from prml.nn.distribution.distribution import Distribution
 from prml.nn.function import Function
+from prml.nn.loss.softmax_cross_entropy import softmax_cross_entropy
 from prml.nn.math.log import log
 from prml.nn.nonlinear.softmax import softmax
-from prml.nn.distribution.distribution import Distribution
-from prml.nn.loss.softmax_cross_entropy import softmax_cross_entropy
 
 
 class Categorical(Distribution):

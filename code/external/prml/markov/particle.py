@@ -1,6 +1,7 @@
 import numpy as np
-from scipy.special import logsumexp
 from scipy.spatial.distance import cdist
+from scipy.special import logsumexp
+
 from .state_space_model import StateSpaceModel
 
 

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from scipy.stats import halfcauchy, multivariate_normal
+from scipy.stats import halfcauchy
 
 """
 Example of transformation of constrained variables. From ADVI Section 2.3

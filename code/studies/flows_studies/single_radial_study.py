@@ -1,6 +1,6 @@
-import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.mplot3d import Axes3D
+import numpy as np
+
 """
 For a given set of parameters that will define contractions/expansions
 from a point, study the evolution of the transfer function

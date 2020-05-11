@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.stats import truncnorm
 from prml.nn.array.array import asarray
+from scipy.stats import truncnorm
 
 
 def normal(mean, std, size):

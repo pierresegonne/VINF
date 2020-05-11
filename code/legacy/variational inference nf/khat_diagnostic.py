@@ -1,10 +1,11 @@
-import numpy as np
 import sys
+import sys
+
 import tensorflow as tf
 import tensorflow_probability as tfp
-
 from distributions import *
 from flows import Flows
+
 sys.path.append("..")
 from psis import psislw
 

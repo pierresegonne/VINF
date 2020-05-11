@@ -1,7 +1,8 @@
 import os
+
 import tensorflow as tf
 
-from models.shared import Flows, ParametrizedGaussian
+from models.shared import Flows
 
 # Disable CPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'

@@ -1,4 +1,5 @@
 import os
+
 import tensorflow as tf
 
 from models.shared import ParametrizedGaussian

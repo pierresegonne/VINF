@@ -1,7 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from scipy.integrate import quad
 import seaborn as snb
+from scipy.integrate import quad
+
 snb.set_style('darkgrid')
 from psis import psislw
 

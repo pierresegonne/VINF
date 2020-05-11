@@ -1,12 +1,11 @@
 """
 Variational Inference using Mean Field approximation.
 """
-import numpy as np
 import matplotlib.pyplot as plt
-
+import numpy as np
 from scipy.special import digamma, logsumexp
-from scipy.stats import multivariate_normal, wishart
 from serialisation import *
+
 
 class VariationalGaussianMixture():
 

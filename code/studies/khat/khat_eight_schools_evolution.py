@@ -1,8 +1,7 @@
 import numpy as np
-import tensorflow as tf
+from khat import q_posterior, log_joint_pdf
 
 from external.psis import psislw
-from khat import q_posterior, log_joint_pdf
 from models.model import get_model
 from parameters import get_training_parameters, target_distributions
 from train import train
@@ -59,18 +58,18 @@ with open('khat_evolution_eight_schools.npy', 'wb') as f:
 
 
 
-for n flow 
-    
-    train
-    tf.Graph()
-
-    tf.keras.backend.clear_session()
-    tf.reset_default_graph()
-
-    for k in K
-
-        khat 
-
-        avg khat 
-
-        append(avg_khat)
+# for n flow
+#
+#     train
+#     tf.Graph()
+#
+#     tf.keras.backend.clear_session()
+#     tf.reset_default_graph()
+#
+#     for k in K
+#
+#         khat
+#
+#         avg khat
+#
+#         append(avg_khat)

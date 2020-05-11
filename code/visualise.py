@@ -1,23 +1,21 @@
 import os
-import tensorflow as tf
 
-from models.model import *
+from models.model import load_model
 from parameters import *
-
-# mf
-from visualisations.mean_field_2d import visualise as visualise_mf_2d
-from visualisations.mean_field_eight_schools import visualise as visualise_mf_eight_schools
-from visualisations.mean_field_figure_eight import visualise as visualise_mf_figure_eight
-from visualisations.mean_field_two_hills import visualise as visualise_mf_two_hills
 # nf
 from visualisations.flows_2d import visualise as visualise_nf_2d
 from visualisations.flows_eight_schools import visualise as visualise_nf_eight_schools
 from visualisations.flows_figure_eight import visualise as visualise_nf_figure_eight
 from visualisations.flows_two_hills import visualise as visualise_nf_two_hills
-
+# mf
+from visualisations.mean_field_2d import visualise as visualise_mf_2d
+from visualisations.mean_field_eight_schools import visualise as visualise_mf_eight_schools
+from visualisations.mean_field_figure_eight import visualise as visualise_mf_figure_eight
+from visualisations.mean_field_two_hills import visualise as visualise_mf_two_hills
 
 # Disable CPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 def visualise(q, model_choice, training_parameters):
     if model_choice == MEAN_FIELD:
@@ -41,7 +39,6 @@ def visualise(q, model_choice, training_parameters):
 
 
 if __name__ == '__main__':
-
     """ Inference Target | Possible Choices:
     two_hills
     banana
@@ -52,7 +49,7 @@ if __name__ == '__main__':
     figure_eight
     eight_schools
     """
-    target = 'energy_4'
+    target = 'banana'
 
     """ Model for Inference | Possible Choices:
     mean_field

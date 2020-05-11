@@ -1,7 +1,6 @@
 import numpy as np
-from scipy.special import gamma
 from prml.rv.rv import RandomVariable
-
+from scipy.special import gamma
 
 np.seterr(all="ignore")
 

@@ -1,5 +1,4 @@
 import numpy as np
-from prml.rv.multivariate_gaussian import MultivariateGaussian as Gaussian
 from prml.markov.state_space_model import StateSpaceModel
 
 

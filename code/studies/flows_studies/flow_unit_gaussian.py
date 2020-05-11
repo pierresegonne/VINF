@@ -1,9 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
-
-from mpl_toolkits.mplot3d import Axes3D
-from scipy.stats import multivariate_normal
 from scipy.integrate import dblquad
+from scipy.stats import multivariate_normal
+
 """
 Apply a given succession of flows, planar or radial, to a unit gaussian and observe deformation of contour plot.
 """

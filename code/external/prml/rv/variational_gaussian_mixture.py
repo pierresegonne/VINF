@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.special import digamma, gamma, logsumexp
 from prml.rv.rv import RandomVariable
+from scipy.special import digamma, gamma, logsumexp
 
 
 class VariationalGaussianMixture(RandomVariable):

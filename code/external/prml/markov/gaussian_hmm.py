@@ -1,5 +1,6 @@
 import numpy as np
 from prml.rv import MultivariateGaussian
+
 from .hmm import HiddenMarkovModel
 
 

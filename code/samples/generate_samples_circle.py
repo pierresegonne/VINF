@@ -1,11 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import sys
 
-sys.path.append("../../")
+import matplotlib.pyplot as plt
+import numpy as np
+
+sys.path.append("../")
 
 from parameters import SAMPLES_SAVES_EXTENSION
-from scipy.stats import multivariate_normal
 
 SAMPLES_NAME = 'circle'
 

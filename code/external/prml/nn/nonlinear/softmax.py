@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.special import logsumexp
 from prml.nn.function import Function
+from scipy.special import logsumexp
 
 
 class Softmax(Function):

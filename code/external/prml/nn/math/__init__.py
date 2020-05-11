@@ -1,14 +1,13 @@
-from prml.nn.math.negative import negative
+from prml.nn.array import Array
 from prml.nn.math.add import add
-from prml.nn.math.subtract import subtract, rsubtract
 from prml.nn.math.divide import divide, rdivide
+from prml.nn.math.matmul import matmul, rmatmul
 from prml.nn.math.mean import mean
 from prml.nn.math.multiply import multiply
-from prml.nn.math.matmul import matmul, rmatmul
+from prml.nn.math.negative import negative
 from prml.nn.math.power import power, rpower
+from prml.nn.math.subtract import subtract, rsubtract
 from prml.nn.math.sum import sum
-from prml.nn.array import Array
-
 
 Array.__neg__ = negative
 Array.__add__ = add

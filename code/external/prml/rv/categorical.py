@@ -1,6 +1,6 @@
 import numpy as np
-from prml.rv.rv import RandomVariable
 from prml.rv.dirichlet import Dirichlet
+from prml.rv.rv import RandomVariable
 
 
 class Categorical(RandomVariable):

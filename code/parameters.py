@@ -1,3 +1,5 @@
+import numpy as np
+
 """
 Gathers all parameters for the project/models
 """
@@ -10,15 +12,15 @@ target_distributions = [
     {
         'name': 'two_hills',
         'd': 1,
-        'epochs': 2000,
-        'n_flows': 8,
+        'epochs': 10000,
+        'n_flows': 1,
         'n_samples': 5000,
     },
     {
         'name': 'banana',
         'd': 2,
         'epochs': 5000,
-        'n_flows': 16,
+        'n_flows': 8,
         'n_samples': 5000,
     },
     {
@@ -65,7 +67,7 @@ target_distributions = [
     },
     {
         'name': 'eight_schools',
-        'd': 2 + EIGHT_SCHOOL_K, # 8 thetas, mu and tau
+        'd': 2 + EIGHT_SCHOOL_K,  # 8 thetas, mu and tau
         'epochs': 35000,
         'n_flows': 64,
         'n_samples': 5000,
@@ -74,7 +76,8 @@ target_distributions = [
 # list of available distribution names
 existing_distributions = [distribution['name'] for distribution in target_distributions]
 # update the target disributions with shape attribute
-target_distributions = [{**distribution, **{'shape': (distribution['n_samples'],distribution['d'])}} for distribution in target_distributions]
+target_distributions = [{**distribution, **{'shape': (distribution['n_samples'], distribution['d'])}} for distribution
+                        in target_distributions]
 
 ## Model classes
 MEAN_FIELD = 'mean_field'
@@ -97,6 +100,7 @@ SAMPLES_SAVES_EXTENSION = 'npy'
 ## Visualisations
 VISUALISATIONS_FOLDER = 'visualisations'
 
+
 ## ------
 ## Helping functions
 
@@ -106,3 +110,10 @@ def get_training_parameters(target):
     return list(filter(lambda distribution: distribution['name'] == target, target_distributions))[0]
 
 
+def get_training_samples(target, training_parameters):
+    with open(f"{SAMPLES_SAVES_FOLDER}/{target}.{SAMPLES_SAVES_EXTENSION}", 'rb') as f:
+        samples = np.load(f)
+    if samples.shape[0] > training_parameters['shape'][0]:
+        random_indices = np.random.choice(range(samples.shape[0]), training_parameters['shape'][0], replace=False)
+        samples = samples[random_indices]
+    return samples

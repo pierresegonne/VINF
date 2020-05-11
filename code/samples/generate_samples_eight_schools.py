@@ -1,10 +1,11 @@
-import numpy as np
-import matplotlib.pyplot as plt
 import pickle
-import pymc3 as pm
 import sys
 
-sys.path.append("../../")
+import matplotlib.pyplot as plt
+import numpy as np
+import pymc3 as pm
+
+sys.path.append("../")
 
 from parameters import SAMPLES_SAVES_EXTENSION
 from target_distributions import eight_schools_y, eight_schools_sigma

@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from scipy.stats import halfcauchy, multivariate_normal
+from scipy.stats import halfcauchy
 
 N = 1000
 mu = np.random.normal(loc=0, scale=5, size=N)

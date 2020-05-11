@@ -1,6 +1,6 @@
 import numpy as np
-from prml.rv.rv import RandomVariable
 from prml.rv.gamma import Gamma
+from prml.rv.rv import RandomVariable
 
 
 class Gaussian(RandomVariable):

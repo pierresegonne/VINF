@@ -55,7 +55,7 @@ class Flows(tf.keras.Model):
         z0 = self.parametrized_gaussian(eps)
 
         zk, log_det_jacobian = self.flow1(z0)
-        for i in range(2, self.n_flows + 1 ):
+        for i in range(2, self.n_flows + 1):
             zk, log_det_jacobian = getattr(self, "flow%i" % i)((zk, log_det_jacobian))
 
         return z0, zk, log_det_jacobian, self.parametrized_gaussian.mu, self.parametrized_gaussian.log_var

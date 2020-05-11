@@ -1,11 +1,12 @@
+import sys
+
 import matplotlib.pyplot as plt
 import numpy as np
-import sys
 import tensorflow as tf
 import tensorflow_probability as tfp
-
 from distributions import *
 from model import GaussianWithReparametrization
+
 sys.path.append("..")
 from psis import psislw
 

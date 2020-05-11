@@ -1,8 +1,8 @@
 import numpy as np
 from prml.nn.array.array import Array
-from prml.nn.network import Network
 from prml.nn.function import Function
 from prml.nn.image.util import img2patch, patch2img
+from prml.nn.network import Network
 
 
 class Convolve2dFunction(Function):

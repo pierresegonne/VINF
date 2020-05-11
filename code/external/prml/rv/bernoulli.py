@@ -1,6 +1,6 @@
 import numpy as np
-from prml.rv.rv import RandomVariable
 from prml.rv.beta import Beta
+from prml.rv.rv import RandomVariable
 
 
 class Bernoulli(RandomVariable):

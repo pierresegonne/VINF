@@ -1,5 +1,3 @@
-import numpy as np
-from prml.nn.function import Function
 from prml.nn.distribution.bernoulli import Bernoulli
 from prml.nn.distribution.categorical import Categorical
 from prml.nn.distribution.gaussian import Gaussian

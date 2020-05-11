@@ -1,6 +1,6 @@
 import numpy as np
-from scipy.special import logsumexp
 from prml.rv.rv import RandomVariable
+from scipy.special import logsumexp
 
 
 class BernoulliMixture(RandomVariable):

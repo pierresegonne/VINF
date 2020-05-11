@@ -1,14 +1,19 @@
-import matplotlib.pyplot as plt
 import os
+
+import matplotlib.pyplot as plt
 import tensorflow as tf
 import tensorflow_probability as tfp
 
-from models.model import *
+from models.model import get_model, save_model
+from models.model_mean_field import MeanField
+from models.model_planar_flows import PlanarFlows
+from models.model_radial_flows import RadialFlows
 from parameters import *
 from target_distributions import get_log_joint_pdf
 
 # Disable CPU warnings
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
+
 
 def mean_field_elbo(log_joint_pdf, z, mu, log_var):
     batch_size = z.shape[0]
@@ -19,6 +24,7 @@ def mean_field_elbo(log_joint_pdf, z, mu, log_var):
     neg_log_likelihood = -tf.math.reduce_sum(log_joint_pdf(z))
 
     return (log_qz + neg_log_likelihood) / batch_size
+
 
 def flows_elbo(log_joint_pdf, z0, zk, log_det_jacobian, mu, log_var):
     batch_size = z0.shape[0]
@@ -34,17 +40,20 @@ def flows_elbo(log_joint_pdf, z0, zk, log_det_jacobian, mu, log_var):
 
     return (log_qzk + neg_log_likelihood) / batch_size
 
+
 @tf.function
 def compute_loss(model, log_joint_pdf):
     if isinstance(model, MeanField):
         z, mu, log_var = model(None)
         loss = mean_field_elbo(log_joint_pdf, z, mu, log_var)
-    if isinstance(model, PlanarFlows) | isinstance(model, RadialFlows):
+    elif isinstance(model, PlanarFlows) | isinstance(model, RadialFlows):
         z0, zk, log_det_jacobian, mu, log_var = model(None)
         loss = flows_elbo(log_joint_pdf, z0, zk, log_det_jacobian, mu, log_var)
     else:
-        raise ValueError(f"model {model} is of a not recognized model instance. Only models possible are MF, PF and RF.")
+        raise ValueError(
+            f"model {model} is of a not recognized model instance. Only models possible are MF, PF and RF.")
     return loss
+
 
 @tf.function
 def compute_apply_gradients(model, optimizer, log_joint_pdf):
@@ -54,9 +63,10 @@ def compute_apply_gradients(model, optimizer, log_joint_pdf):
     optimizer.apply_gradients(zip(gradients, model.trainable_variables))
     return loss
 
+
 def train(model, training_parameters):
     optimizer = tf.keras.optimizers.Adam(5e-3)
-    optimizer = tf.keras.optimizers.RMSprop(1e-5, momentum=0.9)
+    # optimizer = tf.keras.optimizers.RMSprop(1e-5, momentum=0.9)
     log_joint_pdf = get_log_joint_pdf(training_parameters['name'])
 
     # Early stopping
@@ -102,7 +112,7 @@ if __name__ == '__main__':
     figure_eight
     eight_schools
     """
-    target = 'energy_4'
+    target = 'banana'
 
     """ Model for Inference | Possible Choices:
     mean_field

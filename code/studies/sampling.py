@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pymc3 as pm
-import seaborn as sns
 
 y_observed = np.array([28,8,-3,7,-1,1,18,12])
 sigma_observed = np.array([15,10,16,11,9,11,10,18])
