@@ -1,5 +1,12 @@
 # Custom
 *.pdf
+"Icon\r"
+Icon
+Icon\r
+.DS_Store
+workspace.xml
+/.idea
+*.sublime-workspace
 
 # --------------
 # Byte-compiled / optimized / DLL files
@@ -145,3 +152,4 @@ cython_debug/
 # static files generated from Django application using `collectstatic`
 media
 static
+"Icon\r"
