@@ -34,19 +34,19 @@ def plot_contour_distribution(X, Y, pdf):
 # =======
 # Data
 resolution = 1e-2
-LB = 0
-UB = 2
+LB = -6
+UB = 6
 x = np.arange(LB, UB, resolution)
 y = np.arange(LB, UB, resolution)
 X, Y = np.meshgrid(x, y)
 pos = np.empty(X.shape + (2,))
-pos[:, :, 0] = X;
+pos[:, :, 0] = X
 pos[:, :, 1] = Y
 
 # =======
 # Original Distribution
-original_mu = np.array([1, 1])
-original_sigma = 0.1 * np.eye(2)
+original_mu = np.array([0, 0])
+original_sigma = 4 * np.eye(2)
 rv = multivariate_normal(original_mu, original_sigma)
 
 # ======
@@ -165,16 +165,19 @@ b = [0, 1, 1, 1, 1]
 if False:
     u = planar_u_corrector(u, w)
 
-zref = [0, np.array([[0.75, 0.75]]), np.array([[0.85, 0.85]]), np.array([[0.85, 0.85]])]
-alpha = [0, 1.1, 0.01, 0.01]
-beta = [0, -0.99, 0.5, 0.5]
+# zref = [0, np.array([[0.75, 0.75]]), np.array([[0.85, 0.85]]), np.array([[0.85, 0.85]])]
+# alpha = [0, 1.1, 0.01, 0.01]
+# beta = [0, -0.99, 0.5, 0.5]
+zref = [0, np.array([[ 0., 0.]]), np.array([[ 0., 0.]]), np.array([[ 0., 0.]]), np.array([[ 0., 0.]])]
+alpha = [0, 0.01, 0.01, 0.01, 0.01]
+beta = [0, 0.5, 0.5, 0.5, 0.5]
 # Correction for invertibility
 if True:
     beta = radial_beta_corrector(beta, alpha)
 
 # ======
 # Run
-n_layers = 1
+n_layers = 3
 
 PLANAR_FLOW = False
 RADIAL_FLOW = not PLANAR_FLOW

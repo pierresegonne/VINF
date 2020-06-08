@@ -7,6 +7,7 @@ import tensorflow_probability as tfp
 
 from parameters import SAMPLES_SAVES_EXTENSION, SAMPLES_SAVES_FOLDER
 
+figsize = (6*(751/582), 6)
 
 def show_samples(zk, z0, mu):
     z0 = z0.numpy()
@@ -20,7 +21,7 @@ def show_samples(zk, z0, mu):
 
     alpha = 0.5
 
-    plt.figure()
+    plt.figure(figsize=figsize)
     plt.scatter(zk[mask_tl][:, 0], zk[mask_tl][:, 1], color='red', alpha=alpha)
     plt.scatter(zk[mask_tr][:, 0], zk[mask_tr][:, 1], color='blue', alpha=alpha)
     plt.scatter(zk[mask_bl][:, 0], zk[mask_bl][:, 1], color='green', alpha=alpha)
@@ -32,14 +33,14 @@ def show_samples(zk, z0, mu):
 def show_density(zk):
     # hexbin
     zk = zk.numpy()
-    plt.figure()
+    plt.figure(figsize=figsize)
     plt.hexbin(zk[:, 0], zk[:, 1], gridsize=(50, 50), bins='log', cmap='inferno')  # mincnt=1 to have white background
     plt.colorbar()
     plt.xlabel(r'$z_{1}$')
     plt.ylabel(r'$z_{2}$')
 
     # kde
-    plt.figure()
+    plt.figure(figsize=figsize)
     ax = sns.kdeplot(zk[:, 0], zk[:, 1], cmap='magma', n_levels=10)
     ax.set_xlabel(r'$z_{1}$')
     ax.set_ylabel(r'$z_{2}$')
@@ -53,7 +54,7 @@ def show_3d_pde(z0, zk, ldj, mu, log_var):
     log_qzk = (tf.math.reduce_sum(log_qz0, axis=1, keepdims=True) - ldj).numpy()
     qzk = tf.math.exp(log_qzk).numpy()
 
-    fig = plt.figure()
+    fig = plt.figure(figsize=figsize)
     ax = fig.add_subplot(111, projection='3d')
 
     zk = zk.numpy()
@@ -78,7 +79,7 @@ def visualise(q, shape, target):
     except FileNotFoundError:
         original_samples = []
 
-    plt.figure()
+    plt.figure(figsize=figsize)
     plt.scatter(z0[:, 0], z0[:, 1], color='crimson', alpha=0.6, label=r'$q_{0}$')
     if len(original_samples) > 0:
         plt.scatter(original_samples[:, 0], original_samples[:, 1], color='gray', alpha=0.6, label='True Posterior')

@@ -1,4 +1,6 @@
 import numpy as np
+import tensorflow as tf
+import tensorflow_probability as tfp
 
 """
 Gathers all parameters for the project/models
@@ -6,16 +8,16 @@ Gathers all parameters for the project/models
 
 ## Number of schools in eight schools model
 EIGHT_SCHOOL_K = 8
-EIGHT_SCHOOL_CENTERED = False
+EIGHT_SCHOOL_CENTERED = True
 
 ## Target Distributions, available cases
 target_distributions = [
     {
         'name': 'two_hills',
         'd': 1,
-        'epochs': 10000,
+        'epochs': 2000,
         'n_flows': 4,
-        'n_samples': 5000,
+        'n_samples': 500,
     },
     {
         'name': 'banana',
@@ -27,7 +29,7 @@ target_distributions = [
     {
         'name': 'circle',
         'd': 2,
-        'epochs': 10000,
+        'epochs': 5000,
         'n_flows': 16,
         'n_samples': 500,
     },
@@ -36,42 +38,42 @@ target_distributions = [
         'd': 2,
         'epochs': 5000,
         'n_flows': 16,
-        'n_samples': 5000,
+        'n_samples': 500,
     },
     {
         'name': 'energy_1',
         'd': 2,
-        'epochs': 15000,
+        'epochs': 10000,
         'n_flows': 32,
-        'n_samples': 100,
+        'n_samples': 500,
     },
     {
         'name': 'energy_2',
         'd': 2,
         'epochs': 10000,
-        'n_flows': 16,
-        'n_samples': 100,
+        'n_flows': 32,
+        'n_samples': 500,
     },
     {
         'name': 'energy_3',
         'd': 2,
-        'epochs': 9000,
+        'epochs': 10000,
         'n_flows': 32,
-        'n_samples': 100,
+        'n_samples': 500,
     },
     {
         'name': 'energy_4',
         'd': 2,
-        'epochs': 15000,
+        'epochs': 10000,
         'n_flows': 32,
-        'n_samples': 100,
+        'n_samples': 500,
     },
     {
         'name': 'figure_eight',
         'd': 2,
         'epochs': 5000,
         'n_flows': 16,
-        'n_samples': 5000,
+        'n_samples': 500,
     },
     {
         'name': 'eight_schools',

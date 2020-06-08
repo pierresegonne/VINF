@@ -68,15 +68,14 @@ def compute_apply_gradients(model, optimizer, log_joint_pdf):
 
 def train(model, training_parameters, model_choice, target, model_name_suffix=''):
     optimizer = tf.keras.optimizers.Adam(1e-2)
-    # optimizer = tf.keras.optimizers.RMSprop(1e-5, momentum=0.9)
     log_joint_pdf = get_log_joint_pdf(training_parameters['name'])
 
     # Early stopping
     best_loss = 1e20
     last_improvement = 0
     max_consecutive_no_improvement = 15000
-    min_epoch_checkpoint = 500
-    checkpoint_tol = 0.
+    min_epoch_checkpoint = 1
+    checkpoint_tol = 0.02
     saved_checkpoint = False
 
     # Monitor training loss for visualisation
@@ -89,7 +88,7 @@ def train(model, training_parameters, model_choice, target, model_name_suffix=''
                 print(f"    - CHECKPOINT for epoch {epoch + 1}, current best loss {loss}")
                 save_model(model, model_choice, target, model_name_suffix=model_name_suffix)
                 best_loss = loss
-                last_improvement = 0.002
+                last_improvement = 0
                 saved_checkpoint = True
 
         else:
@@ -133,7 +132,7 @@ if __name__ == '__main__':
     planar_flows
     radial_flows
     """
-    model_choice = 'planar_flows'
+    model_choice = 'radial_flows'
 
     training_parameters = get_training_parameters(target)
     print(f"  - TRAINING PARAMS {training_parameters}")
@@ -144,6 +143,8 @@ if __name__ == '__main__':
     q = train(q, training_parameters, model_choice, target, model_name_suffix='')
     end_time = time.time()
     print(f'Training time: {end_time - start_time}')
+
+    q = load_model(model_choice, training_parameters, model_name_suffix='')
 
     # Opt for experiments
     # print(f"  - INTEGRAL VALUE CHECK {integral_check(q)}")

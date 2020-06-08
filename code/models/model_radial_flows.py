@@ -8,6 +8,8 @@ from models.shared import Flows
 os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 """ Custom layers as flows """
+
+
 class RadialFlow(tf.keras.layers.Layer):
     def __init__(self, init_sigma=0.01):
         super(RadialFlow, self).__init__()
@@ -25,18 +27,18 @@ class RadialFlow(tf.keras.layers.Layer):
             'z_ref',
             shape=[1, self.d],
             initializer=w_init
-            )
+        )
         self.alpha = self.add_weight(
             'alpha',
             shape=[1],
             initializer=w_init,
-            #constraint=tf.keras.constraints.NonNeg(),
-            )
+            # constraint=tf.keras.constraints.NonNeg(),
+        )
         self.beta = self.add_weight(
             'beta',
             shape=[1],
             initializer=w_init
-            )
+        )
 
     @property
     def normalized_beta(self):
@@ -44,6 +46,7 @@ class RadialFlow(tf.keras.layers.Layer):
         From Annex, this correction ensures the invertibility of
         the flow.
         """
+
         def m(x):
             return tf.math.log(1 + tf.math.exp(x))
 
@@ -51,13 +54,15 @@ class RadialFlow(tf.keras.layers.Layer):
         return self._normalized_beta
 
     def r(self, z):
-        return tf.norm(z - self.z_ref)
+        return tf.expand_dims(tf.norm(z - self.z_ref, axis=1), 1)
 
     def h(self, r):
+        #return 1 / (self.alpha + r)
         return 1 / (tf.nn.relu(self.alpha) + r)
 
     def h_p(self, r):
-        return - 1 / ((tf.nn.relu(self.alpha) + r)**2)
+        #return - 1 / ((self.alpha + r) ** 2)
+        return - 1 / ((tf.nn.relu(self.alpha) + r) ** 2)
 
     def call(self, z_input):
         """
@@ -72,11 +77,13 @@ class RadialFlow(tf.keras.layers.Layer):
         beta = self.normalized_beta
         r = self.r(z)
 
-        log_det_jacobian += (self.d - 1)*tf.math.log(tf.math.abs(1 + beta*self.h(r))) + tf.math.log(tf.math.abs(1 + beta*self.h(r) + beta*self.h_p(r)*r))
+        log_det_jacobian += (self.d - 1) * tf.math.log(tf.math.abs(1 + beta * self.h(r))) + tf.math.log(
+            tf.math.abs(1 + beta * self.h(r) + beta * self.h_p(r) * r))
 
-        fz = z + beta*self.h(r)*(z - self.z_ref)
+        fz = z + beta * tf.multiply((z - self.z_ref), self.h(r))
 
         return fz, log_det_jacobian
+
 
 class RadialFlows(Flows):
     def __init__(self, d=2, n_flows=10, shape=(1000, 2)):

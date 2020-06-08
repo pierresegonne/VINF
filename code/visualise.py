@@ -44,14 +44,14 @@ if __name__ == '__main__':
     figure_eight
     eight_schools
     """
-    target = 'eight_schools'
+    target = 'energy_4'
 
     """ Model for Inference | Possible Choices:
     mean_field
     planar_flows
     radial_flows
     """
-    model_choice = 'planar_flows'
+    model_choice = 'radial_flows'
 
     training_parameters = get_training_parameters(target)
     training_parameters['shape'] = (5000, training_parameters['shape'][1])
