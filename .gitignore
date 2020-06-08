@@ -7,6 +7,8 @@ Icon\r
 workspace.xml
 /.idea
 *.sublime-workspace
+!VINF.pdf
+papers/*
 
 # --------------
 # Byte-compiled / optimized / DLL files
