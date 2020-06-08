@@ -9,7 +9,7 @@ os.environ['TF_CPP_MIN_LOG_LEVEL'] = '2'
 
 """ Custom layers as flows """
 class PlanarFlow(tf.keras.layers.Layer):
-    def __init__(self, init_sigma=0.1):
+    def __init__(self, init_sigma=0.01):
         super(PlanarFlow, self).__init__()
         # Parameters
         self.d = None

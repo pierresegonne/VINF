@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 """
@@ -18,8 +19,8 @@ pos[:, :, 0] = X; pos[:, :, 1] = Y
 
 # =======
 # Parameters
-alpha = 0.1
-beta = 0.5
+alpha = 1.1
+beta = -0.99
 #beta = -alpha + np.log(1 + np.exp(beta))
 zref = np.array([[1.00001,1.00001]])
 
@@ -57,7 +58,7 @@ ax.set_ylabel('Y Axis')
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.set_title('exp(-ln|det f/z|)')
+ax.set_title(r'|det($\frac{\partial f}{\partial z}$)$|^{-1}$')
 ax.plot_surface(X,Y,np.exp(-np.log(tf)), cmap='magma')
 ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')

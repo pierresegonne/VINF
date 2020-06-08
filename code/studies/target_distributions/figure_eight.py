@@ -6,7 +6,7 @@ from scipy.stats import multivariate_normal
 # Example parameters of multivariate
 mu1 = 1 * np.array([-1,-1])
 mu2 = 1 * np.array([1,1])
-sig = 0.2 * np.identity(2)
+sig = 0.45 * np.identity(2)
 
 # Create grid and multivariate normal
 x = np.linspace(-5,5,300)
@@ -22,5 +22,7 @@ def mixture_pdf(p1, p2, pos, pi=0.5):
 
 
 plt.contour(X,Y, mixture_pdf(p1, p2, pos), cmap='magma')
+plt.xlabel(r'$z_{1}$')
+plt.ylabel(r'$z_{2}$')
 plt.show()
 

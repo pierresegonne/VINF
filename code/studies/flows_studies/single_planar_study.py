@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+from mpl_toolkits.mplot3d import Axes3D
 import numpy as np
 
 """
@@ -18,9 +19,9 @@ pos[:, :, 0] = X; pos[:, :, 1] = Y
 
 # =======
 # Parameters
-w = np.array([[-1e-8, 1e-8]])
-b = 1e-8
-u = np.array([[-1e-8, -1e-8]])
+w = np.array([[-1, 0]])
+b = 1
+u = np.array([[-0.95, -0.95]])
 
 print('Hyperplane: {}x + {}y = -{}'.format(w[0,0],w[0,1],b))
 print('F Invertible: {}'.format((w@u.T)[0,0] >= -1))
@@ -63,7 +64,7 @@ ax.set_ylabel('Y Axis')
 
 fig = plt.figure()
 ax = fig.add_subplot(111, projection='3d')
-ax.set_title('exp(-ln|det f/z|)')
+ax.set_title(r'|det($\frac{\partial f}{\partial z}$)$|^{-1}$')
 ax.plot_surface(X,Y,np.exp(-np.log(tf)), cmap='magma')
 ax.set_xlabel('X Axis')
 ax.set_ylabel('Y Axis')

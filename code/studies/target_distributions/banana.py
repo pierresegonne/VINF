@@ -9,8 +9,8 @@ banana_std2 = 4
 banana_std1 = 1
 
 # Create grid and multivariate normal
-x = np.linspace(-6, 6, 200)
-y = np.linspace(-6, 6, 200)
+x = np.linspace(-4, 10, 200)
+y = np.linspace(-8, 8, 200)
 X, Y = np.meshgrid(x, y)
 pos = np.empty(X.shape + (2,))
 pos[:, :, 0] = X
@@ -37,5 +37,7 @@ def banana_pdf(pos):
 
 
 plt.figure()
-plt.contour(X, Y, banana_pdf(pos), cmap='magma')
+plt.contour(X, Y, banana_pdf(pos), cmap='magma', levels=10)
+plt.xlabel(r'$z_{1}$')
+plt.ylabel(r'$z_{2}$')
 plt.show()

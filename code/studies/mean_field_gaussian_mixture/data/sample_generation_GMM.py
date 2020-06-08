@@ -12,9 +12,12 @@ from scipy.stats import multivariate_normal
 from serialisation import serialise_object
 
 def generate_spsd(n):
-    m = np.random.uniform(0,2,size=n)
+    m = np.random.uniform(0,3,size=n)
     m = m@(m.T)
     m = m + n*np.eye(n)
+    if np.random.uniform(0,1) > .5:
+        m[0,1] = -m[0,1]
+        m[1, 0] = -m[1, 0]
     return m
 
 def multivariate_gaussian_2d(n_components, n_samples=100, span=[-10,10]):
@@ -39,7 +42,7 @@ def multivariate_gaussian_2d(n_components, n_samples=100, span=[-10,10]):
 
 
 
-X, mus, sigmas, contours = multivariate_gaussian_2d(8, n_samples=200)
+X, mus, sigmas, contours = multivariate_gaussian_2d(2, n_samples=200)
 SAVE_DATA_NAME = '2D_gaussian_mixture_X.pickle'
 SAVE_PARAMS_NAME = '2D_gaussian_mixture_params.pickle'
 SAVE_CONTOURS_NAME = '2D_gaussian_mixture_contours.pickle'
@@ -48,9 +51,11 @@ serialise_object({'mus': mus, 'sigmas': sigmas}, SAVE_PARAMS_NAME)
 serialise_object(contours, SAVE_CONTOURS_NAME)
 
 # Visualization to check interest of samples.
-plt.plot(X[:,0], X[:,1], 'o')
+plt.plot(X[:,0], X[:,1], 'o', color='grey', alpha=0.5)
 for contour in contours['c']:
-    plt.contour(contours['X'], contours['Y'], contour)
+    plt.contour(contours['X'], contours['Y'], contour, levels=6, cmap='magma')
+plt.xlabel(r'$x_{1}$')
+plt.ylabel(r'$x_{2}$')
 plt.show()
 
 

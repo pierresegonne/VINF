@@ -1,0 +1,72 @@
+import matplotlib.pyplot as plt
+import numpy as np
+"""
+
+PF_2S_N10  KHAT 0.5367847077846527 0.07985491863487601 ELBO 13.32424045944214 0.019642195612160140
+PF_2S_N20  KHAT 0.4601915135383606 0.06368948779082063 ELBO 13.28671954345703 0.011105146326844194
+PF_2S_N30  KHAT 0.4035696725845338 0.05564004227830473 ELBO 13.27900680160522 0.007777416089934278
+PF_2S_N40  KHAT 0.3794648941159248 0.04971070724485865 ELBO 13.27674266815185 0.008141495782037118
+PF_2S_N60  KHAT 0.3346332897245884 0.07428947001795963 ELBO 13.28021076965332 0.009472895052704131
+PF_2S_N80  KHAT 0.2837617763876915 0.08347755555547352 ELBO 13.29189368057251 0.022633854247268555
+PF_2S_N128 KHAT 0.3311685975193978 0.02986020462426854 ELBO 13.28040722274780 0.011931313255163107
+
+"""
+
+N_FLOWS = np.array([10, 20, 30, 40, 60, 80, 128])
+
+# From diagnostic.txt
+khat_avg = np.array([
+    0.5367847077846527,
+    0.4601915135383606,
+    0.4035696725845337,
+    0.3794648941159248,
+    0.3346332897245884,
+    0.2837617763876915,
+    0.3311685975193977,
+])
+khat_std = np.array([
+    0.07985491863487601,
+    0.06368948779082063,
+    0.05564004227830473,
+    0.04971070724485865,
+    0.07428947001795963,
+    0.08347755555547352,
+    0.02986020462426854,
+])
+
+elbo_avg = np.array([
+    -13.32424045944214,
+    -13.28671954345703,
+    -13.27900680160522,
+    -13.27674266815185,
+    -13.28021076965332,
+    -13.29189368057251,
+    -13.28040722274780,
+])
+elbo_std = np.array([
+    0.019642195612160140,
+    0.011105146326844194,
+    0.007777416089934278,
+    0.008141495782037118,
+    0.009472895052704131,
+    0.022633854247268555,
+    0.011931313255163107,
+])
+
+fig, (ax1, ax2) = plt.subplots(1, 2)
+
+ax1.axhline(y=0.5, color='dimgrey', linestyle='-')
+ax1.axhline(y=0.7, color='dimgrey', linestyle='-')
+ax1.errorbar(N_FLOWS, khat_avg, yerr=1.96*khat_std, fmt='-o', linewidth=2, color='darkseagreen', ecolor='darkslategrey', capsize=5)
+ax1.set_xlabel('Number of Flows')
+ax1.set_ylabel(r'$\hat{k}$')
+ax1.set_xticks(N_FLOWS)
+ax1.grid(color='lightgray', axis='y')
+
+ax2.errorbar(N_FLOWS, elbo_avg, yerr=1.96*elbo_std, fmt='-o', linewidth=2, color='teal', ecolor='darkslategrey', capsize=5)
+ax2.set_xlabel('Number of Flows')
+ax2.set_ylabel(r'ELBO($q_{k}$)')
+ax2.set_xticks(N_FLOWS)
+ax2.grid(color='lightgray', axis='y')
+
+plt.show()

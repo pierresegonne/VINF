@@ -1,6 +1,9 @@
 import matplotlib.pyplot as plt
 import numpy as np
 import pymc3 as pm
+import sys
+
+sys.path.append("../")
 
 from parameters import SAMPLES_SAVES_EXTENSION
 from target_distributions import banana_mu2, banana_std2, banana_std1
@@ -18,7 +21,15 @@ print(pm.summary(trace).round(2))
 pm.traceplot(trace)
 
 plt.figure()
-plt.scatter(trace['x1'], trace['x2'], color='green')
+plt.scatter(trace['x1'], trace['x2'], color='darkorchid', alpha=0.6)
+plt.xlabel(r'$z_{1}$')
+plt.ylabel(r'$z_{2}$')
+
+plt.figure()
+plt.hexbin(trace['x1'], trace['x2'], gridsize=50, mincnt=1, bins='log', cmap='inferno')
+plt.colorbar()
+plt.xlabel(r'$z_{1}$')
+plt.ylabel(r'$z_{2}$')
 plt.show()
 
 with open(f"{SAMPLES_NAME}.{SAMPLES_SAVES_EXTENSION}", 'wb') as f:

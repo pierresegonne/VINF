@@ -28,5 +28,6 @@ def factorized_pdf(pos, q1, q2):
 
 plt.contour(X,Y, p.pdf(pos), colors='green')
 plt.contour(X,Y, factorized_pdf(pos, q1, q2), colors='red')
-
+plt.xlabel(r'$z_{1}$')
+plt.ylabel(r'$z_{2}$')
 plt.show()
